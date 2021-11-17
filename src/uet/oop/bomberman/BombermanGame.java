@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import uet.oop.bomberman.control.Move;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
 
 
 public class BombermanGame extends Application {
@@ -70,13 +72,32 @@ public class BombermanGame extends Application {
 
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
+
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP:
+                    Move.move_up(bomberman, 5);
+                    break;
+                case DOWN:
+                    Move.move_down(bomberman, 5);
+                    break;
+                case LEFT:
+                    Move.move_left(bomberman, 5);
+                    break;
+                case RIGHT:
+                    Move.move_right(bomberman, 5);
+                    break;
+                /*case SPACE:
+                    Bomb.putBomb();
+                    break;*/
+            }
+        });
     }
     
 
 
 
-    public void update() {
-        entities.forEach(Entity::update);
+    public void update() {entities.forEach(Entity::update);
     }
 
     public void render() {

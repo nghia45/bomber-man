@@ -16,4 +16,10 @@ public class Bomber extends Entity {
     public void update() {
 
     }
+
+    public void handle_move(int direction){
+        switch (direction){
+
+        }
+    }
 }
