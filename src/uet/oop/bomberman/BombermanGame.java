@@ -7,23 +7,35 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import uet.oop.bomberman.Control.Move;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.Bomber.Bomberman;
 import uet.oop.bomberman.entities.Enemies.Balloon;
+import uet.oop.bomberman.entities.Enemies.Oneal;
 import uet.oop.bomberman.graphics.Sprite;
+
+import uet.oop.bomberman.graphics.Map;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
     
-    public static final int WIDTH = 20;
+    public static final int WIDTH = 25;
     public static final int HEIGHT = 15;
+
+    public static int _width = 0;
+    public static int _height = 0;
+    public static int _level = 1;
     
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+
+    public static List<Entity> entities = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
+
+    public static int[][] position;
 
 
     public static void main(String[] args) {
@@ -32,9 +44,9 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
+        Map level_1 = new Map("res/levels/Level1.txt");
 
         // Tao root container
         Group root = new Group();
@@ -48,9 +60,6 @@ public class BombermanGame extends Application {
         stage.show();
         stage.setTitle("Bomberman");
 
-        /**
-         * function to handle game event;
-         */
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -60,31 +69,40 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        createMap();
+        Bomber bomber = new Bomber(23, 13,1, Sprite.player_right.getFxImage());
+        entities.add(bomber);
+        Balloon balloon1 = new Balloon(6,1, 1, Sprite.balloom_right1.getFxImage());
+        Balloon balloon2 = new Balloon(9,4,1, Sprite.balloom_left3.getFxImage());
+        Oneal oneal1 = new Oneal(23,5, 2, Sprite.oneal_right1.getFxImage());
+        entities.add(balloon1);
+        entities.add(balloon2);
+        entities.add(oneal1);
 
-        Entity bomberman = new Bomber(1, 1, 1, Sprite.player_right.getFxImage());
-        Entity balloon = new Balloon(5, 5, 1, 1, Sprite.balloom_right1.getFxImage());
-        entities.add(bomberman);
-        entities.add(balloon);
-    }
-
-    public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                }
-                else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
-                }
-                stillObjects.add(object);
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP:
+                    Move.move_up(bomber, Sprite.SCALED_SIZE);
+                    break;
+                case DOWN:
+                    Move.move_down(bomber, Sprite.SCALED_SIZE);
+                    break;
+                case LEFT:
+                    Move.move_left(bomber, Sprite.SCALED_SIZE);
+                    break;
+                case RIGHT:
+                    Move.move_right(bomber, Sprite.SCALED_SIZE);
+                    break;
+                /*case SPACE:
+                    Bomb.putBomb();
+                    break;*/
             }
-        }
+        });
+
     }
 
     public void update() {
         entities.forEach(Entity::update);
+        stillObjects.forEach(Entity::update);
     }
 
     public void render() {

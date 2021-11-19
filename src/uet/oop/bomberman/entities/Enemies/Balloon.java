@@ -1,16 +1,14 @@
 package uet.oop.bomberman.entities.Enemies;
 
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.Enemies.AIMove.AILow;
 
 public class Balloon extends Enemy {
 
-    public Balloon (int x, int y, int speed, int direction, Image img) {
-        super( x, y, speed, direction, img);
+    public Balloon (int x, int y, int speed, Image img) {
+        super( x, y, speed, img);
+        aI = new AILow();
+        direction = 0;
     }
 
 }
