@@ -29,12 +29,13 @@ public class BombermanGame extends Application {
     public static int _height = 0;
     public static int _level = 1;
     public static int[][] positionEntity;
+    public static int[][] DestroyObjList;
 
 
     private GraphicsContext gc;
     private Canvas canvas;
-    public static final List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> entities = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -77,6 +78,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        stillObjects.forEach(Entity::update);
     }
 
     public void render() {
