@@ -19,6 +19,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.graphics.Map;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class BombermanGame extends Application {
@@ -37,6 +38,7 @@ public class BombermanGame extends Application {
     public static List<Entity> stillObjects = new ArrayList<>();
 
     public static int bombBank = 1;
+    public static int bombRadius = 1;
 
     public static int[][] position;
 
@@ -106,6 +108,7 @@ public class BombermanGame extends Application {
     public void update() {
         entities.forEach(Entity::update);
         stillObjects.forEach(Entity::update);
+        entities.removeIf(entity -> entity.isLife() == 0);
     }
 
     public void render() {

@@ -13,7 +13,6 @@ public abstract class Bomberman extends Entity {
         super(xUnit, yUnit, img);
         this.speed = speed;
     }
-
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
     }
