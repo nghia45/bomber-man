@@ -11,6 +11,7 @@ public class Move {
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 0;
             bomber.setY(bomber.getY() - step);
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 1;
+            bomber.setImg(Sprite.player_up.getFxImage());
         }
     }
     public static void move_down(Bomber bomber, int step){
@@ -18,6 +19,7 @@ public class Move {
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 0;
             bomber.setY(bomber.getY() + step);
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 1;
+            bomber.setImg(Sprite.player_down.getFxImage());
         }
     }
     public static void move_left(Bomber bomber, int step){
@@ -25,6 +27,7 @@ public class Move {
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 0;
             bomber.setX(bomber.getX() - step);
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 1;
+            bomber.setImg(Sprite.player_left.getFxImage());
         }
     }
     public static void move_right(Bomber bomber, int step){
@@ -32,6 +35,7 @@ public class Move {
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 0;
             bomber.setX(bomber.getX() + step);
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 1;
+            bomber.setImg(Sprite.player_right.getFxImage());
         }
     }
 }

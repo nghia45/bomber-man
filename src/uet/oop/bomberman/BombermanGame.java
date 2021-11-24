@@ -98,7 +98,13 @@ public class BombermanGame extends Application {
                     Move.move_right(bomber, Sprite.SCALED_SIZE);
                     break;
                 case SPACE:
-                    Bomb.placeBomb(bomber.getX(), bomber.getY());
+                    if(bombBank>0){
+                        int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
+                        int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
+                        Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
+                        entities.add(bomb);
+                        bombBank--;
+                    }
                     break;
             }
         });

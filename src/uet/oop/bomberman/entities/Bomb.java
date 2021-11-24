@@ -16,9 +16,9 @@ import static uet.oop.bomberman.BombermanGame.*;
 
 public class Bomb extends Entity{
 
-    private static long bombTime;
-    private static long bombTempTime;
-    private static int bombState = 0;
+    private long bombTime = System.currentTimeMillis();
+    private int bombState = 0;
+    ArrayList<Flame> flame = new ArrayList<>();
 
     public Bomb(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -29,50 +29,52 @@ public class Bomb extends Entity{
     }
 
     public void bombTick(){
-        if (System.currentTimeMillis() - bombTime < 20000) {
-            if (System.currentTimeMillis() - bombTempTime > 3000) {
-                bombState = 3;
-                bombExplodeHandle();
-                bombTempTime += 100;
-            }
-        } else {
-            setImg(Sprite.bomb_2.getFxImage());
+        if (bombState < 9 && System.currentTimeMillis() - bombTime > 200) {
             bombState++;
+            handleBombAnimation();
             bombTime = System.currentTimeMillis();
-            bombTempTime = bombTime;
         }
-    }
-
-    public void bombExplodeHandle() {
-        if (System.currentTimeMillis() - bombTime < 40000) {
-            if (System.currentTimeMillis() - bombTempTime > 3000) {
-                setImg(Sprite.bomb_exploded.getFxImage());
-                Media sound = new Media(new File("res/sound/bomb_explosion.wav").toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(sound);
-                mediaPlayer.play();
-                bombExplode();
-            }
+        if(bombState == 9){
+            bombState++;
+            handleBombAnimation();
+            bombExplode();
+            bombTime = System.currentTimeMillis();
+        }
+        if(bombState > 9 && System.currentTimeMillis() - bombTime > 100){
+            bombState++;
+            handleBombAnimation();
+            bombTime = System.currentTimeMillis();
+        }
+        if(bombState > 13){
+            setLife(0);
+            stillObjects.removeAll(flame);
+            bombBank++;
         }
     }
 
     public void bombExplode() {
+        Media sound = new Media(new File("res/sound/bomb_explosion.wav").toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
         Iterator<Entity> entitylist = stillObjects.iterator();
         ArrayList<Entity> new_grass = new ArrayList<>();
-        ArrayList<Entity> new_flame = new ArrayList<>();
-        this.setImg(Sprite.bomb_exploded.getFxImage());
-        bombTempTime += 1000;
         while (entitylist.hasNext()) {
             Entity entity = entitylist.next();
-            if (entity instanceof Brick) {
+            if (entity instanceof Brick || entity instanceof Grass) {
                 for(int i = 1; i<=bombRadius; i++) {
                     if (getX() + Sprite.SCALED_SIZE*i == entity.getX() && getY() == entity.getY()) {
                         entitylist.remove();
                         Entity object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
                                 entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                         new_grass.add(object);
-                        Entity flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
-                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_right_last.getFxImage());
-                        break;
+                        Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
+                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage());
+                        flame.add(new_flame);
+                        new_flame.setFlame_type("RIGHT");
+                        if(i == bombRadius){
+                            new_flame.setImg(Sprite.explosion_horizontal_right_last.getFxImage());
+                            new_flame.setFlame_type("RIGHT_LAST");
+                        }
                     }
                 }
                 for(int i = 1; i<=bombRadius; i++) {
@@ -81,8 +83,15 @@ public class Bomb extends Entity{
                         Entity object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
                                 entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                         new_grass.add(object);
+                        Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
+                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage());
+                        flame.add(new_flame);
+                        new_flame.setFlame_type("DOWN");
+                        if(i == bombRadius){
+                            new_flame.setImg(Sprite.explosion_vertical_down_last.getFxImage());
+                            new_flame.setFlame_type("DOWN_LAST");
+                        }
                     }
-                    break;
                 }
                 for(int i = 1; i<=bombRadius; i++) {
                     if (getX() - Sprite.SCALED_SIZE*i == entity.getX() && getY() == entity.getY()) {
@@ -90,17 +99,31 @@ public class Bomb extends Entity{
                         Entity object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
                                 entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                         new_grass.add(object);
+                        Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
+                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage());
+                        flame.add(new_flame);
+                        new_flame.setFlame_type("LEFT");
+                        if(i == bombRadius){
+                            new_flame.setImg(Sprite.explosion_horizontal_left_last.getFxImage());
+                            new_flame.setFlame_type("LEFT_LAST");
+                        }
                     }
-                    break;
                 }
                 for(int i = 1; i<=bombRadius; i++) {
-                    if (getX() == entity.getX() && getY() - Sprite.SCALED_SIZE*i == entity.getY()) {
+                    if (getX() == entity.getX() && getY() - Sprite.SCALED_SIZE * i == entity.getY()) {
                         entitylist.remove();
                         Entity object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
                                 entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                         new_grass.add(object);
+                        Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
+                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage());
+                        flame.add(new_flame);
+                        new_flame.setFlame_type("TOP");
+                        if (i == bombRadius) {
+                            new_flame.setImg(Sprite.explosion_vertical_top_last.getFxImage());
+                            new_flame.setFlame_type("TOP_LAST");
+                        }
                     }
-                    break;
                 }
             }
         }
@@ -108,33 +131,96 @@ public class Bomb extends Entity{
             position[grass.getX() / Sprite.SCALED_SIZE][grass.getY() / Sprite.SCALED_SIZE] = 0;
             stillObjects.add(grass);
         }
-        setLife(0);
-        bombBank++;
-    }
-
-    public static void placeBomb(int x, int y){
-        if(bombBank>0){
-            x = Math.round(x / Sprite.SCALED_SIZE);
-            y = Math.round(y / Sprite.SCALED_SIZE);
-            Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
-            bombTime = System.currentTimeMillis();
-            bombTempTime = bombTime;
-            entities.add(bomb);
-            bombBank--;
-        }
+        stillObjects.addAll(flame);
     }
 
     public void handleBombAnimation(){
         switch (bombState){
-            case 1:
+            case 1: case 4: case 7 :
                 this.setImg(Sprite.bomb_1.getFxImage());
                 break;
-            case 2:
+            case 2: case 5: case 8:
                 this.setImg(Sprite.bomb_2.getFxImage());
                 break;
-            case 3:
-                this.setImg(Sprite.bomb_exploded.getFxImage());
+            case 3: case 6: case 9:
+                this.setImg(Sprite.bomb.getFxImage());
                 break;
+            case 10:
+                this.setImg(Sprite.bomb_exploded.getFxImage());
+                for (Flame _flame : flame){
+                    switch (_flame.getFlame_type()){
+                        case "DOWN": case "TOP":
+                            _flame.setImg(Sprite.explosion_vertical.getFxImage());
+                            break;
+                        case "RIGHT": case "LEFT":
+                            _flame.setImg(Sprite.explosion_horizontal.getFxImage());
+                            break;
+                        case "DOWN_LAST":
+                            _flame.setImg(Sprite.explosion_vertical_down_last.getFxImage());
+                            break;
+                        case "TOP_LAST":
+                            _flame.setImg(Sprite.explosion_vertical_top_last.getFxImage());
+                            break;
+                        case "RIGHT_LAST":
+                            _flame.setImg(Sprite.explosion_horizontal_right_last.getFxImage());
+                            break;
+                        case "LEFT_LAST":
+                            _flame.setImg(Sprite.explosion_horizontal_left_last.getFxImage());
+                            break;
+                    }
+                }
+                break;
+            case 11:
+                this.setImg(Sprite.bomb_exploded1.getFxImage());
+                for (Flame _flame : flame){
+                    switch (_flame.getFlame_type()){
+                        case "DOWN": case "TOP":
+                            _flame.setImg(Sprite.explosion_vertical1.getFxImage());
+                            break;
+                        case "RIGHT": case "LEFT":
+                            _flame.setImg(Sprite.explosion_horizontal1.getFxImage());
+                            break;
+                        case "DOWN_LAST":
+                            _flame.setImg(Sprite.explosion_vertical_down_last1.getFxImage());
+                            break;
+                        case "TOP_LAST":
+                            _flame.setImg(Sprite.explosion_vertical_top_last1.getFxImage());
+                            break;
+                        case "RIGHT_LAST":
+                            _flame.setImg(Sprite.explosion_horizontal_right_last1.getFxImage());
+                            break;
+                        case "LEFT_LAST":
+                            _flame.setImg(Sprite.explosion_horizontal_left_last1.getFxImage());
+                            break;
+                    }
+                }
+                break;
+            case 12:
+                this.setImg(Sprite.bomb_exploded2.getFxImage());
+                for (Flame _flame : flame){
+                    switch (_flame.getFlame_type()){
+                        case "DOWN": case "TOP":
+                            _flame.setImg(Sprite.explosion_vertical2.getFxImage());
+                            break;
+                        case "RIGHT": case "LEFT":
+                            _flame.setImg(Sprite.explosion_horizontal2.getFxImage());
+                            break;
+                        case "DOWN_LAST":
+                            _flame.setImg(Sprite.explosion_vertical_down_last2.getFxImage());
+                            break;
+                        case "TOP_LAST":
+                            _flame.setImg(Sprite.explosion_vertical_top_last2.getFxImage());
+                            break;
+                        case "RIGHT_LAST":
+                            _flame.setImg(Sprite.explosion_horizontal_right_last2.getFxImage());
+                            break;
+                        case "LEFT_LAST":
+                            _flame.setImg(Sprite.explosion_horizontal_left_last2.getFxImage());
+                            break;
+                    }
+                }
+                break;
+            default:
         }
     }
 
