@@ -10,6 +10,7 @@ public class Move {
         if (position[bomber.getX() / Sprite.SCALED_SIZE][(bomber.getY() - 1) / Sprite.SCALED_SIZE] == 0) {
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 0;
             bomber.setY(bomber.getY() - step);
+            bomber.setDirection(2);
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 1;
         }
     }
@@ -17,6 +18,7 @@ public class Move {
         if (position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE + 1] == 0) {
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 0;
             bomber.setY(bomber.getY() + step);
+            bomber.setDirection(3);
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 1;
         }
     }
@@ -24,6 +26,7 @@ public class Move {
         if (position[(bomber.getX() - 1 )/ Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] == 0) {
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 0;
             bomber.setX(bomber.getX() - step);
+            bomber.setDirection(1);
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 1;
         }
     }
@@ -31,6 +34,7 @@ public class Move {
         if (position[bomber.getX() / Sprite.SCALED_SIZE + 1][bomber.getY() / Sprite.SCALED_SIZE] == 0) {
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 0;
             bomber.setX(bomber.getX() + step);
+            bomber.setDirection(0);
             position[bomber.getX() / Sprite.SCALED_SIZE][bomber.getY() / Sprite.SCALED_SIZE] = 1;
         }
     }
