@@ -22,15 +22,11 @@ public class FlameItem extends Item {
 
     @Override
     public void update() {
-        for (Entity entity : block)
-            if (entity instanceof SpeedItem && !this.isGetItem())
-                if (destroyObjList[entity.getX() / 32][entity.getY() / 32] == 4)
-                    entity.setImg(Sprite.powerup_flames.getFxImage());
-
         if (!this.getItem)
-            if (bomber.getX() == this.x && bomber.getY() == this.y) {
+            if (bomber.getX() == this.getX() && bomber.getY() == this.getY()) {
                 this.setImg(Sprite.grass.getFxImage());
                 this.getItem = true;
+                bombRadius += 2;
             }
     }
 }

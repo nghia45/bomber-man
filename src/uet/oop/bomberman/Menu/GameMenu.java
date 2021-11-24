@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.level.Level1;
+import uet.oop.bomberman.level.*;
 import static uet.oop.bomberman.BombermanGame.*;
 
 public class GameMenu extends Parent {

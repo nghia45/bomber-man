@@ -14,6 +14,8 @@ public abstract class Entity {
     //Tốc độ của đối tượng khi di chuyển
     protected int speed;
 
+    protected int life = 1;
+
 
     protected Image img;
 
@@ -52,11 +54,23 @@ public abstract class Entity {
         this.y = y;
     }
 
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public int isLife() {
+        return life;
+    }
+
+    public Image getImg() {
+        return img;
+    }
+
     public void setImg(Image img) {
         this.img = img;
     }
 
-    public Sprite getSprite() {
-        return sprite;
+    public void setLife(int life) {
+        this.life = life;
     }
 }

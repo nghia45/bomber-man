@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Control.Move;
+import uet.oop.bomberman.Menu.GameMenu;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Bomber.Bomberman;
@@ -19,13 +20,7 @@ import uet.oop.bomberman.entities.Enemies.Oneal;
 import uet.oop.bomberman.graphics.Sprite;
 
 import uet.oop.bomberman.graphics.Map;
-import uet.oop.bomberman.Menu.GameMenu;
 
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +33,15 @@ public class BombermanGame extends Application {
     public static int _height = 0;
     public static int _level = 1;
     
-    public static GraphicsContext gc;
+    private GraphicsContext gc;
     private Canvas canvas;
-    public static  Bomber bomber;
-    public static boolean running;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
-    public static final List<Entity> block = new ArrayList<>();
+    public static List<Entity> newBlock = new ArrayList<>();
+
+    public static int bombBank = 1;
+    public static int bombRadius = 1;
 
     public static int[][] position;
     public static int[][] destroyObjList;
@@ -53,16 +49,21 @@ public class BombermanGame extends Application {
     public static Group root;
     public static ImageView imageView;
     public static Pane r;
+    private GameMenu gameMenu;
+
+    public static  Bomber bomber;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
 
-    private GameMenu gameMenu;
     @Override
     public void start(Stage stage) {
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
+        Map level_1 = new Map("res/levels/Level1.txt");
+
+        // Tao root container
         root = new Group();
         gameMenu = new GameMenu();
         r = new Pane();
@@ -71,7 +72,7 @@ public class BombermanGame extends Application {
         imageView = new ImageView(img);
 
         root.getChildren().addAll(canvas, imageView, r);
-
+        // Tao scene
         Scene scene = new Scene(root);
 
         // Them scene vao stage
@@ -102,16 +103,25 @@ public class BombermanGame extends Application {
                 case RIGHT:
                     Move.move_right(bomber, Sprite.SCALED_SIZE);
                     break;
-                /*case SPACE:
-                    Bomb.putBomb();
-                    break;*/
+                case SPACE:
+                    if(bombBank>0){
+                        int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
+                        int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
+                        Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
+                        entities.add(bomb);
+                        bombBank--;
+                    }
+                    break;
             }
         });
 
+
     }
+
     public void update() {
         entities.forEach(Entity::update);
         stillObjects.forEach(Entity::update);
+        entities.removeIf(entity -> entity.isLife() == 0);
     }
 
     public void render() {
@@ -119,5 +129,4 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
-
 }

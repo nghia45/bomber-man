@@ -30,6 +30,7 @@ public abstract class Enemy extends Entity {
     }
     public void update() {
         calculateMove();
+        chooseSprite();
     }
     public void calculateMove() {
         int cX = 0;
@@ -83,11 +84,12 @@ public abstract class Enemy extends Entity {
         return false;
     }
 
-
     public void move(int x, int y) {
         this.x += x;
         this.y += y;
     }
+
+    protected abstract void chooseSprite();
 }
 
 

@@ -2,12 +2,13 @@ package uet.oop.bomberman.entities.Item;
 
 import javafx.scene.image.Image;
 
-import static uet.oop.bomberman.BombermanGame.*;
-import uet.oop.bomberman.entities.Entity;
+
 import uet.oop.bomberman.graphics.Sprite;
+import static uet.oop.bomberman.BombermanGame.bomber;
 
 public class SpeedItem extends Item {
 
+    public static int speedItem = 0;
     public SpeedItem() {
 
     }
@@ -22,16 +23,12 @@ public class SpeedItem extends Item {
 
     @Override
     public void update() {
-        for (Entity entity : block)
-            if (entity instanceof SpeedItem && !this.isGetItem())
-                if (destroyObjList[entity.getX() / 32][entity.getY() / 32] == 4)
-                    entity.setImg(Sprite.powerup_speed.getFxImage());
-
         if (!this.getItem)
-            if (bomber.getX() == this.x && bomber.getY() == this.y) {
+            if (bomber.getX() == this.getX() && bomber.getY() == this.getY()) {
                 this.setImg(Sprite.grass.getFxImage());
                 this.getItem = true;
-                speed = 2;
+                speedItem = 1;
             }
     }
 }
+

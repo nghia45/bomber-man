@@ -7,12 +7,13 @@ import uet.oop.bomberman.graphics.Map;
 import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.BombermanGame.entities;
 
-public class Level1 {
-    public Level1() {
+public class Level3 {
+    public Level3() {
         entities.clear();
         stillObjects.clear();
-        new Map("res/levels/Level1.txt");
+        new Map("res/levels/Level3.txt");
         bomber = new Bomber(23, 13,1, Sprite.player_right.getFxImage());
         entities.add(bomber);
         Balloon balloon1 = new Balloon(6,1, 1, Sprite.balloom_right1.getFxImage());

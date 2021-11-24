@@ -18,5 +18,5 @@ public abstract class Bomberman extends Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
-    public abstract void move();
+    protected abstract void chooseSprite();
 }
