@@ -38,7 +38,7 @@ public class BombermanGame extends Application {
     public static List<Entity> stillObjects = new ArrayList<>();
 
     public static int bombBank = 1;
-    public static int bombRadius = 1;
+    public static int bombRadius = 2;
 
     public static int[][] position;
 
