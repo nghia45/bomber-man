@@ -1,9 +1,12 @@
 package uet.oop.bomberman.entities.Bomber;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import uet.oop.bomberman.Menu.GameOverMenu;
 import uet.oop.bomberman.graphics.Sprite;
 
-import static uet.oop.bomberman.BombermanGame.position;
+import static uet.oop.bomberman.BombermanGame.*;
 
 public class Bomber extends Bomberman {
 
@@ -15,12 +18,18 @@ public class Bomber extends Bomberman {
         direction = 0;
     }
 
+    public Bomber() {
+
+    }
 
     @Override
     public void update() {
         chooseSprite();
-        if(life == 0) {
-            System.exit(0);
+        if (bomber.getLife() == 0) {
+            entities.clear();
+            stillObjects.clear();
+            root.getChildren().add(iV);
+            root.getChildren().addAll(p);
         }
     }
 

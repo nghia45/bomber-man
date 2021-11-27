@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Control.Move;
 import uet.oop.bomberman.Menu.GameMenu;
+import uet.oop.bomberman.Menu.GameOverMenu;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Bomber.Bomberman;
@@ -36,7 +37,7 @@ public class BombermanGame extends Application {
     public static int _level = 1;
     
     private GraphicsContext gc;
-    private Canvas canvas;
+    public static Canvas canvas;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
@@ -49,8 +50,11 @@ public class BombermanGame extends Application {
 
     public static Group root;
     public static ImageView imageView;
+    public static ImageView iV;
     public static Pane r;
+    public static Pane p;
     private GameMenu gameMenu;
+    public static GameOverMenu gameOverMenu;
 
     public static  Bomber bomber;
 
@@ -71,9 +75,14 @@ public class BombermanGame extends Application {
         r.getChildren().add(gameMenu);
         Image img = new Image("img/menu.png");
         imageView = new ImageView(img);
+        p = new Pane();
+        gameOverMenu = new GameOverMenu();
+        p.getChildren().add(gameOverMenu);
+        Image image = new Image("img/gameover.png");
+        iV = new ImageView(image);
 
         root.getChildren().addAll(canvas, imageView, r);
-        // Tao scene
+
         Scene scene = new Scene(root);
 
         // Them scene vao stage
@@ -117,7 +126,6 @@ public class BombermanGame extends Application {
                     break;
             }
         });
-
 
     }
 

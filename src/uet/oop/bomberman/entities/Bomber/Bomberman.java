@@ -8,6 +8,9 @@ import javafx.scene.image.Image;
 public abstract class Bomberman extends Entity {
     protected int speed;
 
+    public Bomberman() {
+
+    }
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Bomberman(int xUnit, int yUnit, int speed, Image img) {
         super(xUnit, yUnit, img);

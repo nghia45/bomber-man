@@ -15,18 +15,18 @@ import uet.oop.bomberman.level.*;
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.level.NextLevel.*;
 
-public class GameMenu extends Parent {
-    public GameMenu() {
+public class GameOverMenu extends Parent {
+    public GameOverMenu() {
         VBox menu = new VBox(15);
 
         menu.setTranslateX(300);
         menu.setTranslateY(200);
 
-        MenuButton PlayBt = new MenuButton("Play");
+        MenuButton PlayBt = new MenuButton("PlayAgain");
         PlayBt.setOnMouseClicked(event -> {
             _level = 1;
             NewLevel();
-            root.getChildren().removeAll(r, imageView);
+            root.getChildren().removeAll(p, iV);
         });
 
         MenuButton ExitBt = new MenuButton("Exit");
@@ -34,10 +34,9 @@ public class GameMenu extends Parent {
             System.exit(0);
         });
 
-        menu.getChildren().addAll(PlayBt,ExitBt);
+        menu.getChildren().addAll(PlayBt, ExitBt);
 
         getChildren().addAll(menu);
     }
 
 }
-

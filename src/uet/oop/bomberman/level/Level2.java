@@ -8,13 +8,18 @@ import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.BombermanGame.entities;
+import static uet.oop.bomberman.entities.Item.SpeedItem.speedItem;
 
 public class Level2 {
     public Level2() {
         entities.clear();
         stillObjects.clear();
         new Map("res/levels/Level2.txt");
+        bombRadius = 1;
+        bombBank = 1;
+        speedItem = 0;
         bomber = new Bomber(23, 13,1, Sprite.player_right.getFxImage());
+        bomber.setLife(1);
         entities.add(bomber);
         Balloon balloon1 = new Balloon(6,1, 1, Sprite.balloom_right1.getFxImage());
         Balloon balloon2 = new Balloon(9,4,1, Sprite.balloom_left3.getFxImage());

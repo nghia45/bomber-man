@@ -71,7 +71,7 @@ public class Bomb extends Entity{
                                 switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
                                     case 4:
                                         object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
-                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_wallpass.getFxImage());
                                         new_grass.add(object);
                                         break;
                                     case 5:
@@ -117,7 +117,7 @@ public class Bomb extends Entity{
                                 switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
                                     case 4:
                                         object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
-                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_wallpass.getFxImage());
                                         new_grass.add(object);
                                         break;
                                     case 5:
@@ -163,7 +163,7 @@ public class Bomb extends Entity{
                                 switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
                                     case 4:
                                         object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
-                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_wallpass.getFxImage());
                                         new_grass.add(object);
                                         break;
                                     case 5:
@@ -209,7 +209,7 @@ public class Bomb extends Entity{
                                 switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
                                     case 4:
                                         object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
-                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_wallpass.getFxImage());
                                         new_grass.add(object);
                                         break;
                                     case 5:
