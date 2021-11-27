@@ -5,14 +5,16 @@ import uet.oop.bomberman.entities.Enemies.Balloon;
 import uet.oop.bomberman.entities.Enemies.Oneal;
 import uet.oop.bomberman.graphics.Map;
 import uet.oop.bomberman.graphics.Sprite;
-import static uet.oop.bomberman.entities.Item.SpeedItem.speedItem;
-import static uet.oop.bomberman.BombermanGame.*;
 
-public class Level1 {
-    public Level1() {
+import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.BombermanGame.entities;
+import static uet.oop.bomberman.entities.Item.SpeedItem.speedItem;
+
+public class Level2 {
+    public Level2() {
         entities.clear();
         stillObjects.clear();
-        new Map("res/levels/Level1.txt");
+        new Map("res/levels/Level2.txt");
         bombRadius = 1;
         bombBank = 1;
         speedItem = 0;

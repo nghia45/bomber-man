@@ -1,10 +1,8 @@
 package uet.oop.bomberman.graphics;
 
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Wall;
-import uet.oop.bomberman.entities.Grass;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Bomber.Bomber;
-import uet.oop.bomberman.entities.Brick;
+
 import static uet.oop.bomberman.BombermanGame.*;
 
 
@@ -36,10 +34,20 @@ public class Map {
                     for (int j = 0; j < _width; j++) {
                         int val = Integer.parseInt(tokenTile.nextToken());
                         Entity object;
-                        if(val == 2) {
+                        if(val == 8) {
+                            object = new Wall(j, i, Sprite.wall.getFxImage());
+                        }else if(val == 2) {
                             object = new Wall(j, i, Sprite.wall.getFxImage());
                         } else if(val == 3) {
                             object = new Brick(j, i, Sprite.brick.getFxImage());
+                        } else if(val == 4) {
+                            object = new Brick(j, i, Sprite.brick.getFxImage());
+                        } else if(val == 5) {
+                            object = new Brick(j, i, Sprite.brick.getFxImage());
+                        } else if(val == 6) {
+                            object = new Brick(j, i, Sprite.brick.getFxImage());
+                        } else if(val == 7) {
+                            object = new Portal(j, i, Sprite.portal.getFxImage());
                         } else {
                             object = new Grass(j, i, Sprite.grass.getFxImage());
                         }

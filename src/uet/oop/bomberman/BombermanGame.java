@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Control.Move;
 import uet.oop.bomberman.Menu.GameMenu;
+import uet.oop.bomberman.Menu.GameOverMenu;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Bomber.Bomberman;
@@ -24,20 +25,23 @@ import uet.oop.bomberman.graphics.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uet.oop.bomberman.entities.Portal.*;
+
 public class BombermanGame extends Application {
-    
+
     public static final int WIDTH = 25;
     public static final int HEIGHT = 15;
 
     public static int _width = 0;
     public static int _height = 0;
     public static int _level = 1;
-    
+
     private GraphicsContext gc;
-    private Canvas canvas;
+    public static Canvas canvas;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> newBlock = new ArrayList<>();
 
     public static int bombBank = 1;
     public static int bombRadius = 1;
@@ -46,8 +50,11 @@ public class BombermanGame extends Application {
 
     public static Group root;
     public static ImageView imageView;
+    public static ImageView iV;
     public static Pane r;
+    public static Pane p;
     private GameMenu gameMenu;
+    public static GameOverMenu gameOverMenu;
 
     public static  Bomber bomber;
 
@@ -68,9 +75,14 @@ public class BombermanGame extends Application {
         r.getChildren().add(gameMenu);
         Image img = new Image("img/menu.png");
         imageView = new ImageView(img);
+        p = new Pane();
+        gameOverMenu = new GameOverMenu();
+        p.getChildren().add(gameOverMenu);
+        Image image = new Image("img/gameover.png");
+        iV = new ImageView(image);
 
         root.getChildren().addAll(canvas, imageView, r);
-        // Tao scene
+
         Scene scene = new Scene(root);
 
         // Them scene vao stage
@@ -105,14 +117,15 @@ public class BombermanGame extends Application {
                     if(bombBank>0){
                         int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
                         int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
-                        Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
-                        entities.add(bomb);
-                        bombBank--;
+                        if(position[x][y] != 2 && position[x][y] != 3) {
+                            Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
+                            entities.add(bomb);
+                            bombBank--;
+                        }
                     }
                     break;
             }
         });
-
 
     }
 
@@ -120,6 +133,9 @@ public class BombermanGame extends Application {
         entities.forEach(Entity::update);
         stillObjects.forEach(Entity::update);
         entities.removeIf(entity -> entity.isLife() == 0);
+        if(entities.size() == 1) {
+            isEndGame = true;
+        }
     }
 
     public void render() {
