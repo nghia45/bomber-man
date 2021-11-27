@@ -13,6 +13,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.*;
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.level.NextLevel.*;
 
 public class GameMenu extends Parent {
     public GameMenu() {
@@ -24,11 +25,10 @@ public class GameMenu extends Parent {
         //menu1.setTranslateX(100);
         //menu1.setTranslateY(200);
 
-        final int offset = 400;
-
         MenuButton PlayBt = new MenuButton("Play");
         PlayBt.setOnMouseClicked(event -> {
-            new Level1();
+            _level = 1;
+            NewLevel();
             root.getChildren().removeAll(r, imageView);
         });
 

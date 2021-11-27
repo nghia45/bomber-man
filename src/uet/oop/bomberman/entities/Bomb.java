@@ -2,19 +2,16 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Enemies.Enemy;
-import uet.oop.bomberman.entities.Item.BombItem;
-import uet.oop.bomberman.entities.Item.FlameItem;
-import uet.oop.bomberman.entities.Item.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
-
+import uet.oop.bomberman.entities.Item.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
-
+import uet.oop.bomberman.entities.Bomber.Bomber;
 import static uet.oop.bomberman.BombermanGame.*;
 
 public class Bomb extends Entity{
@@ -59,148 +56,188 @@ public class Bomb extends Entity{
         Media sound = new Media(new File("res/sound/bomb_explosion.wav").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
-        Iterator<Entity> entitylist = stillObjects.iterator();
         ArrayList<Entity> new_grass = new ArrayList<>();
-        while (entitylist.hasNext()) {
-            Entity entity = entitylist.next();
-            if (entity instanceof Brick || entity instanceof Grass) {
-                for(int i = 1; i<=bombRadius; i++) {
-                    if (getX() + Sprite.SCALED_SIZE*i == entity.getX() && getY() == entity.getY()) {
-                        entitylist.remove();
-                        Entity object;
-                        switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
-                            case 4:
-                                object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            case 5:
-                                object = new FlameItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            case 6:
-                                object = new BombItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            default:
-                                object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
-                                new_grass.add(object);
-                        }
-                        Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
-                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage());
-                        flame.add(new_flame);
-                        new_flame.setFlame_type("RIGHT");
-                        if(i == bombRadius){
-                            new_flame.setImg(Sprite.explosion_horizontal_right_last.getFxImage());
-                            new_flame.setFlame_type("RIGHT_LAST");
-                        }
-                    }
-                }
-                for(int i = 1; i<=bombRadius; i++) {
-                    if (getX() == entity.getX() && getY() + Sprite.SCALED_SIZE*i == entity.getY()) {
-                        entitylist.remove();
-                        Entity object;
-                        switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
-                            case 4:
-                                object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            case 5:
-                                object = new FlameItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            case 6:
-                                object = new BombItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            default:
-                                object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
-                                new_grass.add(object);
-                        }
-                        Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
-                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage());
-                        flame.add(new_flame);
-                        new_flame.setFlame_type("DOWN");
-                        if(i == bombRadius){
-                            new_flame.setImg(Sprite.explosion_vertical_down_last.getFxImage());
-                            new_flame.setFlame_type("DOWN_LAST");
+        boolean end_top = false, end_down = false, end_left = false, end_right = false;
+        for (int i = 1; i <= bombRadius; i++){
+            if (!end_right) {
+                Iterator<Entity> entitylist = stillObjects.iterator();
+                while (entitylist.hasNext()) {
+                    Entity entity = entitylist.next();
+                    if (getX() + Sprite.SCALED_SIZE * i == entity.getX() && getY() == entity.getY()) {
+                        if (entity instanceof Brick || entity instanceof Grass) {
+                            if (entity instanceof Brick) {
+                                end_right = true;
+                                Entity object;
+                                switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
+                                    case 4:
+                                        object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    case 5:
+                                        object = new FlameItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    case 6:
+                                        object = new BombItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    default:
+                                        object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
+                                        new_grass.add(object);
+                                }
+                            }
+                            Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
+                                    entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage());
+                            flame.add(new_flame);
+                            new_flame.setFlame_type("RIGHT");
+                            if (i == bombRadius || end_right) {
+                                new_flame.setImg(Sprite.explosion_horizontal_right_last.getFxImage());
+                                new_flame.setFlame_type("RIGHT_LAST");
+                            }
+                        } else if (entity instanceof Wall) {
+                            end_right = true;
                         }
                     }
                 }
-                for(int i = 1; i<=bombRadius; i++) {
-                    if (getX() - Sprite.SCALED_SIZE*i == entity.getX() && getY() == entity.getY()) {
-                        entitylist.remove();
-                        Entity object;
-                        switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
-                            case 4:
-                                object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            case 5:
-                                object = new FlameItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            case 6:
-                                object = new BombItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            default:
-                                object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
-                                new_grass.add(object);
-                        }
-                        Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
-                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage());
-                        flame.add(new_flame);
-                        new_flame.setFlame_type("LEFT");
-                        if(i == bombRadius){
-                            new_flame.setImg(Sprite.explosion_horizontal_left_last.getFxImage());
-                            new_flame.setFlame_type("LEFT_LAST");
+            }
+            if (!end_down) {
+                Iterator<Entity> entitylist = stillObjects.iterator();
+                while (entitylist.hasNext()) {
+                    Entity entity = entitylist.next();
+                    if (getX() == entity.getX() && getY() + Sprite.SCALED_SIZE * i == entity.getY()) {
+                        if (entity instanceof Brick || entity instanceof Grass) {
+                            if(entity instanceof Brick){
+                                end_down = true;
+                                entitylist.remove();
+                                Entity object;
+                                switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
+                                    case 4:
+                                        object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    case 5:
+                                        object = new FlameItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    case 6:
+                                        object = new BombItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    default:
+                                        object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
+                                        new_grass.add(object);
+                                }
+                            }
+                            Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
+                                    entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage());
+                            flame.add(new_flame);
+                            new_flame.setFlame_type("DOWN");
+                            if (i == bombRadius || end_down) {
+                                new_flame.setImg(Sprite.explosion_vertical_down_last.getFxImage());
+                                new_flame.setFlame_type("DOWN_LAST");
+                            }
+                        } else if (entity instanceof Wall) {
+                            end_down = true;
                         }
                     }
                 }
-                for(int i = 1; i<=bombRadius; i++) {
+            }
+            if (!end_left) {
+                Iterator<Entity> entitylist = stillObjects.iterator();
+                while (entitylist.hasNext()) {
+                    Entity entity = entitylist.next();
+                    if (getX() - Sprite.SCALED_SIZE * i == entity.getX() && getY() == entity.getY()) {
+                        if (entity instanceof Brick || entity instanceof Grass) {
+                            if(entity instanceof Brick){
+                                end_left = true;
+                                entitylist.remove();
+                                Entity object;
+                                switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
+                                    case 4:
+                                        object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    case 5:
+                                        object = new FlameItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    case 6:
+                                        object = new BombItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    default:
+                                        object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
+                                        new_grass.add(object);
+                                }
+                            }
+                            Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
+                                    entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage());
+                            flame.add(new_flame);
+                            new_flame.setFlame_type("LEFT");
+                            if (i == bombRadius || end_left) {
+                                new_flame.setImg(Sprite.explosion_horizontal_left_last.getFxImage());
+                                new_flame.setFlame_type("LEFT_LAST");
+                            }
+                        } else if (entity instanceof Wall) {
+                            end_left = true;
+                        }
+                    }
+                }
+            }
+            if (!end_top) {
+                Iterator<Entity> entitylist = stillObjects.iterator();
+                while (entitylist.hasNext()) {
+                    Entity entity = entitylist.next();
                     if (getX() == entity.getX() && getY() - Sprite.SCALED_SIZE * i == entity.getY()) {
-                        entitylist.remove();
-                        Entity object;
-                        switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
-                            case 4:
-                                object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            case 5:
-                                object = new FlameItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            case 6:
-                                object = new BombItem(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
-                                new_grass.add(object);
-                                break;
-                            default:
-                                object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
-                                        entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
-                                new_grass.add(object);
-                        }
-                        Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
-                                entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage());
-                        flame.add(new_flame);
-                        new_flame.setFlame_type("TOP");
-                        if (i == bombRadius) {
-                            new_flame.setImg(Sprite.explosion_vertical_top_last.getFxImage());
-                            new_flame.setFlame_type("TOP_LAST");
+                        if (entity instanceof Brick || entity instanceof Grass) {
+                            if(entity instanceof Brick){
+                                end_top = true;
+                                entitylist.remove();
+                                Entity object;
+                                switch (position[entity.getX() / Sprite.SCALED_SIZE][entity.getY() / Sprite.SCALED_SIZE]) {
+                                    case 4:
+                                        object = new SpeedItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    case 5:
+                                        object = new FlameItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    case 6:
+                                        object = new BombItem(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
+                                        new_grass.add(object);
+                                        break;
+                                    default:
+                                        object = new Grass(entity.getX() / Sprite.SCALED_SIZE,
+                                                entity.getY() / Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
+                                        new_grass.add(object);
+                                }
+                            }
+                            Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
+                                    entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage());
+                            flame.add(new_flame);
+                            new_flame.setFlame_type("TOP");
+                            if (i == bombRadius || end_top) {
+                                new_flame.setImg(Sprite.explosion_vertical_top_last.getFxImage());
+                                new_flame.setFlame_type("TOP_LAST");
+                            }
+                        } else if (entity instanceof Wall) {
+                            end_top = true;
                         }
                     }
                 }
@@ -211,6 +248,20 @@ public class Bomb extends Entity{
             stillObjects.add(grass);
         }
         stillObjects.addAll(flame);
+        position[getX()/Sprite.SCALED_SIZE][getY()/Sprite.SCALED_SIZE] = 0;
+        for (Flame _flame : flame) {
+            for (Entity _enemy : entities) {
+                if (_enemy instanceof Enemy || _enemy instanceof Bomber) {
+                    if (_flame.getX() - Sprite.SCALED_SIZE / 2 <= _enemy.getX() &&
+                            _flame.getX() + Sprite.SCALED_SIZE / 2 >= _enemy.getX()) {
+                        if (_flame.getY() - Sprite.SCALED_SIZE / 2 <= _enemy.getY()
+                                && _flame.getY() + Sprite.SCALED_SIZE / 2 >= _enemy.getY()) {
+                            _enemy.setLife(0);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void handleBombAnimation(){

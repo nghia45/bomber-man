@@ -8,7 +8,7 @@ import static uet.oop.bomberman.BombermanGame.position;
 public class Bomber extends Bomberman {
 
     protected int direction;
-
+    protected int life = 1;
     public Bomber(int x, int y, int speed, Image img) {
         super( x, y, speed, img);
         position[x][y] = 1;
@@ -19,6 +19,9 @@ public class Bomber extends Bomberman {
     @Override
     public void update() {
         chooseSprite();
+        if(life == 0) {
+            System.exit(0);
+        }
     }
 
     @Override
@@ -55,5 +58,14 @@ public class Bomber extends Bomberman {
 
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    @Override
+    public void setLife(int life) {
+        this.life = life;
     }
 }

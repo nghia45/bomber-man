@@ -24,6 +24,8 @@ import uet.oop.bomberman.graphics.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uet.oop.bomberman.entities.Portal.*;
+
 public class BombermanGame extends Application {
     
     public static final int WIDTH = 25;
@@ -44,7 +46,6 @@ public class BombermanGame extends Application {
     public static int bombRadius = 1;
 
     public static int[][] position;
-    public static int[][] destroyObjList;
 
     public static Group root;
     public static ImageView imageView;
@@ -107,9 +108,11 @@ public class BombermanGame extends Application {
                     if(bombBank>0){
                         int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
                         int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
-                        Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
-                        entities.add(bomb);
-                        bombBank--;
+                        if(position[x][y] != 2 && position[x][y] != 3) {
+                            Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
+                            entities.add(bomb);
+                            bombBank--;
+                        }
                     }
                     break;
             }
@@ -122,6 +125,9 @@ public class BombermanGame extends Application {
         entities.forEach(Entity::update);
         stillObjects.forEach(Entity::update);
         entities.removeIf(entity -> entity.isLife() == 0);
+        if(entities.size() == 1) {
+            isEndGame = true;
+        }
     }
 
     public void render() {

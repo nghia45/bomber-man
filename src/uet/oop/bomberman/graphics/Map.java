@@ -29,7 +29,6 @@ public class Map {
             _height = Integer.parseInt(tokens.nextToken());
             _width = Integer.parseInt(tokens.nextToken());
             position = new int[_width][_height];
-            destroyObjList = new int [_width][_height];
             while (scanner.hasNextLine()) {
                 for (int i = 0; i < _height; ++i) {
                     String lineTile = scanner.nextLine();
@@ -50,6 +49,8 @@ public class Map {
                             object = new Brick(j, i, Sprite.brick.getFxImage());
                         } else if(val == 6) {
                             object = new Brick(j, i, Sprite.brick.getFxImage());
+                        } else if(val == 7) {
+                            object = new Portal(j, i, Sprite.portal.getFxImage());
                         } else {
                             object = new Grass(j, i, Sprite.grass.getFxImage());
                         }
