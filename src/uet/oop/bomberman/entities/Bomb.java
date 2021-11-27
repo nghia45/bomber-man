@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.Enemies.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -173,12 +174,27 @@ public class Bomb extends Entity{
             stillObjects.add(grass);
         }
         stillObjects.addAll(flame);
+        position[getX()/Sprite.SCALED_SIZE][getY()/Sprite.SCALED_SIZE] = 0;
+        for (Flame _flame : flame) {
+            for (Entity _enemy : entities) {
+                if (_enemy instanceof Enemy || _enemy instanceof Bomber) {
+                    if (_flame.getX() - Sprite.SCALED_SIZE / 2 <= _enemy.getX() &&
+                            _flame.getX() + Sprite.SCALED_SIZE / 2 >= _enemy.getX()) {
+                        if (_flame.getY() - Sprite.SCALED_SIZE / 2 <= _enemy.getY()
+                                && _flame.getY() + Sprite.SCALED_SIZE / 2 >= _enemy.getY()) {
+                            _enemy.setLife(0);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void handleBombAnimation(){
         switch (bombState){
             case 1: case 4: case 7 :
                 this.setImg(Sprite.bomb_1.getFxImage());
+                position[getX()/Sprite.SCALED_SIZE][getY()/Sprite.SCALED_SIZE] = 4;
                 break;
             case 2: case 5: case 8:
                 this.setImg(Sprite.bomb_2.getFxImage());
