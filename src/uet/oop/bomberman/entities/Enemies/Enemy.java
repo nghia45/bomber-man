@@ -29,7 +29,12 @@ public abstract class Enemy extends Entity {
         gc.drawImage(img, x, y);
     }
     public void update() {
-        calculateMove();
+        if(getState() == 0) {
+            calculateMove();
+            chooseSprite();
+        } else {
+            dieHandle();
+        }
     }
     public void calculateMove() {
         int cX = 0;
@@ -83,11 +88,12 @@ public abstract class Enemy extends Entity {
         return false;
     }
 
-
     public void move(int x, int y) {
         this.x += x;
         this.y += y;
     }
+
+    protected abstract void chooseSprite();
 }
 
 
