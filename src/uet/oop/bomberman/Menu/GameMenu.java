@@ -11,21 +11,24 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.level.*;
+import uet.oop.bomberman.level.Level1;
 import static uet.oop.bomberman.BombermanGame.*;
-import static uet.oop.bomberman.level.NextLevel.*;
 
 public class GameMenu extends Parent {
     public GameMenu() {
         VBox menu = new VBox(15);
+        //VBox menu1 = new VBox(15);
 
         menu.setTranslateX(300);
         menu.setTranslateY(200);
+        //menu1.setTranslateX(100);
+        //menu1.setTranslateY(200);
+
+        final int offset = 400;
 
         MenuButton PlayBt = new MenuButton("Play");
         PlayBt.setOnMouseClicked(event -> {
-            _level = 1;
-            NewLevel();
+            new Level1();
             root.getChildren().removeAll(r, imageView);
         });
 

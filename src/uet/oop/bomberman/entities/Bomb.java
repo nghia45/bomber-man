@@ -1,17 +1,21 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.Enemies.Enemy;
+import uet.oop.bomberman.entities.Item.BombItem;
+import uet.oop.bomberman.entities.Item.FlameItem;
+import uet.oop.bomberman.entities.Item.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
-import uet.oop.bomberman.entities.Item.*;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
-import uet.oop.bomberman.entities.Bomber.Bomber;
+
 import static uet.oop.bomberman.BombermanGame.*;
 
 public class Bomb extends Entity{
@@ -33,6 +37,7 @@ public class Bomb extends Entity{
             bombState++;
             handleBombAnimation();
             bombTime = System.currentTimeMillis();
+            position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 9;
         }
         if(bombState == 9){
             bombState++;
@@ -47,6 +52,7 @@ public class Bomb extends Entity{
         }
         if(bombState > 13){
             setLife(0);
+            position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 0;
             stillObjects.removeAll(flame);
             bombBank++;
         }

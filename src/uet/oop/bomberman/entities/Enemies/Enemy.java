@@ -15,7 +15,6 @@ public abstract class Enemy extends Entity {
     protected int speed;
     protected int direction;
     protected int step;
-    protected int life = 1;
 
     protected AI aI;
 
@@ -32,9 +31,6 @@ public abstract class Enemy extends Entity {
     public void update() {
         calculateMove();
         chooseSprite();
-        if(life == 0) {
-            entities.remove(this);
-        }
     }
     public void calculateMove() {
         int cX = 0;
@@ -94,15 +90,6 @@ public abstract class Enemy extends Entity {
     }
 
     protected abstract void chooseSprite();
-
-    @Override
-    public void setLife(int life) {
-        this.life = life;
-    }
-
-    public int getLife() {
-        return life;
-    }
 }
 
 

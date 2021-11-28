@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.Control.Move;
 import uet.oop.bomberman.Menu.GameMenu;
 import uet.oop.bomberman.Menu.GameOverMenu;
+import uet.oop.bomberman.Menu.PauseMenu;
+import uet.oop.bomberman.Menu.WinGameMenu;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Bomber.Bomberman;
@@ -28,20 +30,19 @@ import java.util.List;
 import static uet.oop.bomberman.entities.Portal.*;
 
 public class BombermanGame extends Application {
-    
+
     public static final int WIDTH = 25;
     public static final int HEIGHT = 15;
-
+    public static boolean running = true;
     public static int _width = 0;
     public static int _height = 0;
     public static int _level = 1;
-    
+
     private GraphicsContext gc;
     public static Canvas canvas;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
-    public static List<Entity> newBlock = new ArrayList<>();
 
     public static int bombBank = 1;
     public static int bombRadius = 1;
@@ -51,10 +52,15 @@ public class BombermanGame extends Application {
     public static Group root;
     public static ImageView imageView;
     public static ImageView iV;
+    public static ImageView imgView;
     public static Pane r;
     public static Pane p;
+    public static Pane pane;
+    public static Pane pp;
     private GameMenu gameMenu;
-    public static GameOverMenu gameOverMenu;
+    private GameOverMenu gameOverMenu;
+    private WinGameMenu winGameMenu;
+    private PauseMenu pauseMenu;
 
     public static  Bomber bomber;
 
@@ -70,17 +76,28 @@ public class BombermanGame extends Application {
 
         // Tao root container
         root = new Group();
+
         gameMenu = new GameMenu();
         r = new Pane();
         r.getChildren().add(gameMenu);
         Image img = new Image("img/menu.png");
         imageView = new ImageView(img);
+
         p = new Pane();
         gameOverMenu = new GameOverMenu();
         p.getChildren().add(gameOverMenu);
         Image image = new Image("img/gameover.png");
         iV = new ImageView(image);
 
+        winGameMenu = new WinGameMenu();
+        pane = new Pane();
+        pane.getChildren().add(winGameMenu);
+        Image image1 = new Image("img/win.png");
+        imgView = new ImageView(image1);
+
+        pauseMenu = new PauseMenu();
+        pp = new Pane();
+        pp.getChildren().add(pauseMenu);
         root.getChildren().addAll(canvas, imageView, r);
 
         Scene scene = new Scene(root);
@@ -93,8 +110,10 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                render();
-                update();
+                if(running) {
+                    render();
+                    update();
+                }
             }
         };
         timer.start();
@@ -122,6 +141,15 @@ public class BombermanGame extends Application {
                             entities.add(bomb);
                             bombBank--;
                         }
+                    }
+                    break;
+                case P:
+                    if(running) {
+                        running = !running;
+                        root.getChildren().add(pp);
+                    } else {
+                        running = !running;
+                        root.getChildren().remove(pp);
                     }
                     break;
             }
