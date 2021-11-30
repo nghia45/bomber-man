@@ -100,30 +100,32 @@ public class BombermanGame extends Application {
         timer.start();
 
         scene.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case UP:
-                    Move.move_up(bomber, Sprite.SCALED_SIZE);
-                    break;
-                case DOWN:
-                    Move.move_down(bomber, Sprite.SCALED_SIZE);
-                    break;
-                case LEFT:
-                    Move.move_left(bomber, Sprite.SCALED_SIZE);
-                    break;
-                case RIGHT:
-                    Move.move_right(bomber, Sprite.SCALED_SIZE);
-                    break;
-                case SPACE:
-                    if(bombBank>0){
-                        int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
-                        int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
-                        if(position[x][y] != 2 && position[x][y] != 3) {
-                            Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
-                            entities.add(bomb);
-                            bombBank--;
+            if(bomber.getState() == 0) {
+                switch (event.getCode()) {
+                    case UP:
+                        Move.move_up(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case DOWN:
+                        Move.move_down(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case LEFT:
+                        Move.move_left(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case RIGHT:
+                        Move.move_right(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case SPACE:
+                        if (bombBank > 0) {
+                            int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
+                            int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
+                            if (position[x][y] != 2 && position[x][y] != 3) {
+                                Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
+                                entities.add(bomb);
+                                bombBank--;
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
             }
         });
 

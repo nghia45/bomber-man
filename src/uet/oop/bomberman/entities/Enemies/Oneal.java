@@ -9,27 +9,34 @@ import uet.oop.bomberman.graphics.Sprite;
 import static uet.oop.bomberman.BombermanGame.*;
 
 public class Oneal extends Enemy {
-    public Oneal (int x, int y,  int speed, Image img) {
-        super( x, y, speed, img);
+    public Oneal(int x, int y, int speed, Image img) {
+        super(x, y, speed, img);
         aI = new AIMedium(this);
         direction = 0;
     }
 
     @Override
-    protected void chooseSprite(){
-        Image img;
-        switch (direction) {
-            case 1:
-                img = Sprite.oneal_left1.getFxImage();
-                break;
-            case 2:
-                img = Sprite.oneal_left3.getFxImage();
-                break;
-            case 3:
-                img = Sprite.balloom_right2.getFxImage();
+    protected void chooseSprite() {
+        switch (state) {
+            case 0:
+                switch (direction) {
+                    case 1:
+                        img = Sprite.oneal_left1.getFxImage();
+                        break;
+                    case 2:
+                        img = Sprite.oneal_left3.getFxImage();
+                        break;
+                    case 3:
+                        img = Sprite.oneal_right1.getFxImage();
+                        break;
+                    case 4:
+                        img = Sprite.oneal_right3.getFxImage();
+                        break;
+                }
                 break;
             default:
-                img = Sprite.balloom_right1.getFxImage();
+                img = Sprite.oneal_dead.getFxImage();
+                break;
         }
     }
 }

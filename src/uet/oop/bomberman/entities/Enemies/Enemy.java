@@ -28,14 +28,30 @@ public abstract class Enemy extends Entity {
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
     }
+
     public void update() {
         if(getState() == 0) {
             calculateMove();
-            chooseSprite();
         } else {
             dieHandle();
         }
+        chooseSprite();
     }
+
+    public void dieHandle(){
+        if(state == 1){
+            long dieTime = System.currentTimeMillis();
+            state ++;
+        }
+        else if (state < 5 && System.currentTimeMillis() - dieTime > 200) {
+            state++;
+            dieTime = System.currentTimeMillis();
+        }
+        if(state == 5){
+            setLife(0);
+        }
+    }
+
     public void calculateMove() {
         int cX = 0;
         int cY = 0;

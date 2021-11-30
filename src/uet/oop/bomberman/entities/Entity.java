@@ -47,20 +47,6 @@ public abstract class Entity {
     }
     public abstract void update();
 
-    public void dieHandle(){
-        if(state == 1){
-            long dieTime = System.currentTimeMillis();
-            state ++;
-        }
-        else if (state < 10 && System.currentTimeMillis() - dieTime > 200) {
-            state++;
-            dieTime = System.currentTimeMillis();
-        }
-        if(state == 10){
-            setLife(0);
-        }
-    }
-
     public int getX() {
         return x;
     }
