@@ -1,5 +1,6 @@
 package uet.oop.bomberman.level;
 
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.Enemies.Balloon;
 import uet.oop.bomberman.entities.Enemies.Oneal;
@@ -9,12 +10,16 @@ import uet.oop.bomberman.graphics.Sprite;
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.BombermanGame.entities;
 import static uet.oop.bomberman.entities.Item.SpeedItem.speedItem;
+import static uet.oop.bomberman.graphics.Sound.level1_sound;
+import static uet.oop.bomberman.graphics.Sound.level2_sound;
 
 public class Level2 {
     public Level2() {
         entities.clear();
         stillObjects.clear();
         new Map("res/levels/Level2.txt");
+        g_mediaPlayer = new MediaPlayer(level2_sound);
+        g_mediaPlayer.play();
         bombRadius = 1;
         bombBank = 1;
         speedItem = 0;

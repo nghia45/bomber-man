@@ -10,9 +10,8 @@ import uet.oop.bomberman.entities.Enemies.Enemy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.File;
-
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.graphics.Sound.die_sound;
 
 public class Bomber extends Bomberman {
 
@@ -30,12 +29,7 @@ public class Bomber extends Bomberman {
             checkEnemy();
         } else dieHandle();
         chooseSprite();
-        if (bomber.getLife() == 0) {
-            entities.clear();
-            stillObjects.clear();
-            root.getChildren().add(iV);
-            root.getChildren().addAll(p);
-        }
+
     }
 
     public void checkEnemy(){
@@ -54,8 +48,8 @@ public class Bomber extends Bomberman {
 
     public void dieHandle(){
         if(state == 1){
-            Media sound = new Media(new File("res/sound/just_died.wav").toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            g_mediaPlayer.stop();
+            MediaPlayer mediaPlayer = new MediaPlayer(die_sound);
             mediaPlayer.play();
             long dieTime = System.currentTimeMillis();
             state++;

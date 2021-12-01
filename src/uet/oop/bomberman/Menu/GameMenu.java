@@ -18,6 +18,7 @@ import uet.oop.bomberman.level.Level1;
 import java.io.File;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.graphics.Sound.menu_sound;
 
 public class GameMenu extends Parent {
     public GameMenu() {
@@ -31,8 +32,7 @@ public class GameMenu extends Parent {
 
         final int offset = 400;
 
-        Media sound = new Media(new File("res/sound/title_screen.wav").toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        MediaPlayer mediaPlayer = new MediaPlayer(menu_sound);
         mediaPlayer.play();
 
         MenuButton PlayBt = new MenuButton("Play");

@@ -2,14 +2,21 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Control.Move;
 import uet.oop.bomberman.Menu.GameMenu;
 import uet.oop.bomberman.Menu.GameOverMenu;
@@ -22,6 +29,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 import uet.oop.bomberman.graphics.Map;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +61,8 @@ public class BombermanGame extends Application {
     public static ImageView iV;
     public static Pane r;
     public static Pane p;
+    public static MediaPlayer g_mediaPlayer;
+    public static Slider slider;
     private GameMenu gameMenu;
     public static GameOverMenu gameOverMenu;
 
@@ -81,7 +91,16 @@ public class BombermanGame extends Application {
         Image image = new Image("img/gameover.png");
         iV = new ImageView(image);
 
-        root.getChildren().addAll(canvas, imageView, r);
+        slider = new Slider(0, 100, 100);
+
+        slider.valueProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                g_mediaPlayer.setVolume(slider.getValue() / 100);
+            }
+        });
+
+        root.getChildren().addAll(canvas, imageView, r, slider);
 
         Scene scene = new Scene(root);
 
@@ -102,16 +121,16 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(event -> {
             if(bomber.getState() == 0) {
                 switch (event.getCode()) {
-                    case UP:
+                    case W:
                         Move.move_up(bomber, Sprite.SCALED_SIZE);
                         break;
-                    case DOWN:
+                    case S:
                         Move.move_down(bomber, Sprite.SCALED_SIZE);
                         break;
-                    case LEFT:
+                    case A:
                         Move.move_left(bomber, Sprite.SCALED_SIZE);
                         break;
-                    case RIGHT:
+                    case D:
                         Move.move_right(bomber, Sprite.SCALED_SIZE);
                         break;
                     case SPACE:
@@ -128,16 +147,26 @@ public class BombermanGame extends Application {
                 }
             }
         });
-
     }
 
     public void update() {
-        entities.forEach(Entity::update);
-        stillObjects.forEach(Entity::update);
-        entities.removeIf(entity -> entity.isLife() == 0);
-        if(entities.size() == 1) {
-            isEndGame = true;
+        if (bomber != null && bomber.getLife() == 0) {
+            entities.clear();
+            stillObjects.clear();
+            root.getChildren().add(iV);
+            root.getChildren().addAll(p);
+            bomber.setLife(1);
+        } else {
+            entities.forEach(Entity::update);
+            stillObjects.forEach(Entity::update);
+            entities.removeIf(entity -> entity.isLife() == 0);
+            if(entities.size() == 1) {
+                isEndGame = true;
+            }
         }
+/*        if(!g_mediaPlayer.getStatus().equals(MediaPlayer.Status.READY)){
+            g_mediaPlayer.play();
+        }*/
     }
 
     public void render() {

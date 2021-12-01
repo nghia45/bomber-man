@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.graphics.Sound.*;
 
 public class Bomb extends Entity{
 
@@ -59,8 +60,7 @@ public class Bomb extends Entity{
     }
 
     public void bombExplode() {
-        Media sound = new Media(new File("res/sound/bomb_explosion.wav").toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        MediaPlayer mediaPlayer = new MediaPlayer(bomb_sound);
         mediaPlayer.play();
         ArrayList<Entity> new_grass = new ArrayList<>();
         boolean end_top = false, end_down = false, end_left = false, end_right = false;
