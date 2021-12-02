@@ -3,12 +3,15 @@ package uet.oop.bomberman.entities.Bomber;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Menu.GameOverMenu;
 import uet.oop.bomberman.entities.Enemies.Enemy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.graphics.Sound.die_sound;
 
 public class Bomber extends Bomberman {
 
@@ -22,14 +25,11 @@ public class Bomber extends Bomberman {
 
     @Override
     public void update() {
+        if (state == 0) {
+            checkEnemy();
+        } else dieHandle();
         chooseSprite();
-        checkEnemy();
-        if (bomber.getLife() == 0) {
-            entities.clear();
-            stillObjects.clear();
-            root.getChildren().add(iV);
-            root.getChildren().addAll(p);
-        }
+
     }
 
     public void checkEnemy(){
@@ -39,30 +39,60 @@ public class Bomber extends Bomberman {
                         getX() + Sprite.SCALED_SIZE >= entity.getX()) {
                     if (getY() - Sprite.SCALED_SIZE <= entity.getY()
                             && getY() + Sprite.SCALED_SIZE>= entity.getY()) {
-                        setLife(0);
+                        setState(1);
                     }
                 }
             }
         }
     }
 
+    public void dieHandle(){
+        if(state == 1){
+            g_mediaPlayer.stop();
+            MediaPlayer mediaPlayer = new MediaPlayer(die_sound);
+            mediaPlayer.play();
+            long dieTime = System.currentTimeMillis();
+            state++;
+        }
+        else if (state < 11 && System.currentTimeMillis() - dieTime > 200) {
+            state++;
+            dieTime = System.currentTimeMillis();
+        }
+        if(state == 11){
+            setLife(0);
+        }
+    }
+
     @Override
     protected void chooseSprite() {
         int dir = getDirection();
-        switch (dir) {
+        switch (state) {
             case 0:
-                img = Sprite.player_right.getFxImage();
+                switch (dir) {
+                    case 0:
+                        img = Sprite.player_right.getFxImage();
+                        break;
+                    case 1:
+                        img = Sprite.player_left.getFxImage();
+                        break;
+                    case 2:
+                        img = Sprite.player_up.getFxImage();
+                        break;
+                    case 3:
+                        img = Sprite.player_down.getFxImage();
+                        break;
+                }
                 break;
             case 1:
-                img = Sprite.player_left.getFxImage();
+                img = Sprite.player_dead1.getFxImage();
                 break;
-            case 2:
-                img = Sprite.player_up.getFxImage();
+            case 5:
+                img = Sprite.player_dead2.getFxImage();
                 break;
-            case 3:
-                img = Sprite.player_down.getFxImage();
+            case 8:
+                img = Sprite.player_dead3.getFxImage();
                 break;
-
+            default:
         }
     }
 

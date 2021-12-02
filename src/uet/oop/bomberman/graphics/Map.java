@@ -47,7 +47,8 @@ public class Map {
                         } else if(val == 6) {
                             object = new Brick(j, i, Sprite.brick.getFxImage());
                         } else if(val == 7) {
-                            object = new Portal(j, i, Sprite.portal.getFxImage());
+                            val = 0;
+                            object = new Portal(j, i, Sprite.grass.getFxImage());
                         } else {
                             object = new Grass(j, i, Sprite.grass.getFxImage());
                         }

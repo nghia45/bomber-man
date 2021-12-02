@@ -19,6 +19,10 @@ public class NextLevel {
                 isEndGame = false;
                 break;
             case 4:
+                entities.clear();
+                stillObjects.clear();
+                root.getChildren().add(imgView);
+                root.getChildren().addAll(pane);
                 isEndGame = false;
                 break;
         }

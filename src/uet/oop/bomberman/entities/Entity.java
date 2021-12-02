@@ -16,6 +16,9 @@ public abstract class Entity {
 
     protected int life = 1;
 
+    protected int state = 0;
+    protected long dieTime;
+
 
     protected Image img;
 
@@ -36,7 +39,6 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
-
 
     public int getX() {
         return x;
@@ -73,4 +75,13 @@ public abstract class Entity {
     public void setLife(int life) {
         this.life = life;
     }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
 }

@@ -16,7 +16,7 @@ public class Portal extends Entity {
     @Override
     public void update() {
         if(isEndGame) {
-            position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE ] = 0;
+            this.setImg(Sprite.portal.getFxImage());
             if (bomber.getX() == this.getX() && bomber.getY() == this.getY()) {
                 _level += 1;
                 NewLevel();
