@@ -156,9 +156,9 @@ public class Bomb extends Entity{
                                 end_top = true;
                                 entitylist.remove();
                                 Entity object = explodeBrickCreateItem(entity.getX() / Sprite.SCALED_SIZE,
-                                entity.getY() / Sprite.SCALED_SIZE);
+                                        entity.getY() / Sprite.SCALED_SIZE);
                                 new_grass.add(object);
-                                }
+                            }
                             Flame new_flame = new Flame(entity.getX() / Sprite.SCALED_SIZE,
                                     entity.getY() / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage());
                             flame.add(new_flame);

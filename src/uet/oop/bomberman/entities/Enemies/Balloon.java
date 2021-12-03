@@ -6,10 +6,11 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Balloon extends Enemy {
 
-    public Balloon (int x, int y, int speed, Image img) {
-        super( x, y, speed, img);
+    public Balloon (int x, int y, Image img) {
+        super( x, y, img);
         aI = new AILow();
         direction = 0;
+        speed = 1;
     }
 
     @Override
@@ -35,6 +36,16 @@ public class Balloon extends Enemy {
                 img = Sprite.balloom_dead.getFxImage();
                 break;
         }
+    }
+
+    @Override
+    public void enemyAbility() {
+
+    }
+
+    @Override
+    public void dieHandle() {
+         this.setLife(0);
     }
 
 }

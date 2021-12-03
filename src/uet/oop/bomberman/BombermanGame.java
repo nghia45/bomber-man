@@ -2,30 +2,33 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import uet.oop.bomberman.Control.Move;
 import uet.oop.bomberman.Menu.GameMenu;
 import uet.oop.bomberman.Menu.GameOverMenu;
+import uet.oop.bomberman.Menu.PauseMenu;
+import uet.oop.bomberman.Menu.WinGameMenu;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Bomber.Bomberman;
 import uet.oop.bomberman.entities.Enemies.Balloon;
 import uet.oop.bomberman.entities.Enemies.Oneal;
 import uet.oop.bomberman.graphics.Sprite;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Slider;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import uet.oop.bomberman.graphics.Map;
 
@@ -37,19 +40,24 @@ import static uet.oop.bomberman.entities.Portal.*;
 
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = 25;
+    public static final int WIDTH = 35;
     public static final int HEIGHT = 15;
+
+    public static boolean running = true;
 
     public static int _width = 0;
     public static int _height = 0;
     public static int _level = 1;
+
+    public static MediaPlayer g_mediaPlayer;
+    public static Slider slider;
 
     private GraphicsContext gc;
     public static Canvas canvas;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
-    public static List<Entity> newBlock = new ArrayList<>();
+    public static List<Entity> newEntities = new ArrayList<>();
 
     public static int bombBank = 1;
     public static int bombRadius = 1;
@@ -61,10 +69,15 @@ public class BombermanGame extends Application {
     public static ImageView iV;
     public static Pane r;
     public static Pane p;
-    public static MediaPlayer g_mediaPlayer;
-    public static Slider slider;
+    public static ImageView imgView;
+    public static Pane pane;
+    public static Pane pp;
+
     private GameMenu gameMenu;
-    public static GameOverMenu gameOverMenu;
+    private GameOverMenu gameOverMenu;
+    private WinGameMenu winGameMenu;
+    private PauseMenu pauseMenu;
+
 
     public static  Bomber bomber;
 
@@ -80,16 +93,28 @@ public class BombermanGame extends Application {
 
         // Tao root container
         root = new Group();
+
         gameMenu = new GameMenu();
         r = new Pane();
         r.getChildren().add(gameMenu);
         Image img = new Image("img/menu.png");
         imageView = new ImageView(img);
+
         p = new Pane();
         gameOverMenu = new GameOverMenu();
         p.getChildren().add(gameOverMenu);
         Image image = new Image("img/gameover.png");
         iV = new ImageView(image);
+
+        winGameMenu = new WinGameMenu();
+        pane = new Pane();
+        pane.getChildren().add(winGameMenu);
+        Image image1 = new Image("img/win.png");
+        imgView = new ImageView(image1);
+
+        pauseMenu = new PauseMenu();
+        pp = new Pane();
+        pp.getChildren().add(pauseMenu);
 
         slider = new Slider(0, 100, 100);
 
@@ -97,6 +122,13 @@ public class BombermanGame extends Application {
             @Override
             public void invalidated(Observable observable) {
                 g_mediaPlayer.setVolume(slider.getValue() / 100);
+            }
+        });
+        g_mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                g_mediaPlayer.seek(Duration.ZERO);
+                g_mediaPlayer.play();
             }
         });
 
@@ -107,13 +139,15 @@ public class BombermanGame extends Application {
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
-        stage.setTitle("Bomberman");
+        stage.setTitle("Bomberman Roll");
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                render();
-                update();
+                if(running) {
+                    render();
+                    update();
+                }
             }
         };
         timer.start();
@@ -144,6 +178,17 @@ public class BombermanGame extends Application {
                             }
                         }
                         break;
+                    case P:
+                        if (running) {
+                            running = !running;
+                            root.getChildren().add(pp);
+                            g_mediaPlayer.pause();
+                        } else {
+                            running = !running;
+                            root.getChildren().remove(pp);
+                            g_mediaPlayer.play();
+                        }
+                        break;
                 }
             }
         });
@@ -157,6 +202,8 @@ public class BombermanGame extends Application {
             root.getChildren().addAll(p);
             bomber.setLife(1);
         } else {
+            entities.addAll(newEntities);
+            newEntities.clear();
             entities.forEach(Entity::update);
             stillObjects.forEach(Entity::update);
             entities.removeIf(entity -> entity.isLife() == 0);
@@ -164,9 +211,6 @@ public class BombermanGame extends Application {
                 isEndGame = true;
             }
         }
-/*        if(!g_mediaPlayer.getStatus().equals(MediaPlayer.Status.READY)){
-            g_mediaPlayer.play();
-        }*/
     }
 
     public void render() {

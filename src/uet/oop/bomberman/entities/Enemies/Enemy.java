@@ -18,27 +18,30 @@ public abstract class Enemy extends Entity {
 
     protected AI aI;
 
+    public int pixel = 0;
+
+
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas.
-    public Enemy(int xUnit, int yUnit, int speed, Image img) {
+    public Enemy(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        this.speed = speed;
         this.step = 1;
     }
 
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
     }
-
     public void update() {
         if(getState() == 0) {
+            enemyAbility();
             calculateMove();
         } else {
-            dieHandle();
+            dieAnimationHandle();
+            //dieHandle();
         }
         chooseSprite();
     }
 
-    public void dieHandle(){
+    public void dieAnimationHandle(){
         if(state == 1){
             long dieTime = System.currentTimeMillis();
             state ++;
@@ -48,7 +51,7 @@ public abstract class Enemy extends Entity {
             dieTime = System.currentTimeMillis();
         }
         if(state == 5){
-            setLife(0);
+            this.setLife(0);
         }
     }
 
@@ -63,6 +66,15 @@ public abstract class Enemy extends Entity {
             cX++;
             if (canMoveDR(cX, cY)) {
                 move(cX * speed, cY * speed);
+                /*
+                pixel++;
+                if (pixel >= Sprite.SCALED_SIZE) {
+                    position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 11;
+                    position[this.getX() / Sprite.SCALED_SIZE - 1][this.getY() / Sprite.SCALED_SIZE] = 0;
+                    pixel = 0;
+                }
+
+                 */
             } else {
                 this.step = 0;
             }
@@ -70,6 +82,15 @@ public abstract class Enemy extends Entity {
             cX--;
             if (canMoveUL(cX, cY)) {
                 move(cX * speed, cY * speed);
+                /*
+                pixel++;
+                if (pixel >= Sprite.SCALED_SIZE) {
+                    position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 11;
+                    position[this.getX() / Sprite.SCALED_SIZE + 1][this.getY() / Sprite.SCALED_SIZE] = 0;
+                    pixel = 0;
+                }
+
+                 */
             } else {
                 this.step = 0;
             }
@@ -77,6 +98,14 @@ public abstract class Enemy extends Entity {
             cY++;
             if (canMoveDR(cX, cY)) {
                 move(cX * speed, cY * speed);
+                /*
+                pixel++;
+                if (pixel >= Sprite.SCALED_SIZE) {
+                    position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 11;
+                    position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE - 1] = 0;
+                    pixel = 0;
+                }
+                */
             } else {
                 this.step = 0;
             }
@@ -84,6 +113,12 @@ public abstract class Enemy extends Entity {
             cY--;
             if (canMoveUL(cX, cY)) {
                 move(cX * speed, cY * speed);
+                //pixel++;
+                //if (pixel >= Sprite.SCALED_SIZE) {
+                   // position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 11;
+                    //position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE + 1] = 0;
+                   // pixel = 0;
+                //}
             } else {
                 this.step = 0;
             }
@@ -91,14 +126,16 @@ public abstract class Enemy extends Entity {
     }
 
     public boolean canMoveDR(int x, int y) {
-         if (position[x + this.getX()  / Sprite.SCALED_SIZE][y + this.getY()/ Sprite.SCALED_SIZE] == 0) {
-             return true;
-         }
-         return false;
+        if (position[x + this.getX()  / Sprite.SCALED_SIZE][y + this.getY()/ Sprite.SCALED_SIZE] == 0) {
+            position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 0;
+            return true;
+        }
+        return false;
     }
 
     public boolean canMoveUL(int x, int y) {
         if (position[(x + this.getX())  / Sprite.SCALED_SIZE][(y + this.getY())/ Sprite.SCALED_SIZE] == 0) {
+            position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 0;
             return true;
         }
         return false;
@@ -110,6 +147,11 @@ public abstract class Enemy extends Entity {
     }
 
     protected abstract void chooseSprite();
+
+    public abstract void enemyAbility();
+
+    public abstract void dieHandle();
+
 }
 
 

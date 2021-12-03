@@ -6,13 +6,21 @@ import uet.oop.bomberman.entities.Enemies.AIMove.AILow;
 import uet.oop.bomberman.entities.Enemies.AIMove.AIMedium;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.Random;
+
 import static uet.oop.bomberman.BombermanGame.*;
 
 public class Oneal extends Enemy {
-    public Oneal(int x, int y, int speed, Image img) {
-        super(x, y, speed, img);
+
+    protected Random random = new Random();
+    protected int speedChange;
+
+    public Oneal (int x, int y,  Image img) {
+        super( x, y, img);
         aI = new AIMedium(this);
         direction = 0;
+        speedChange = 0;
+        speed = 2;
     }
 
     @Override
@@ -38,5 +46,19 @@ public class Oneal extends Enemy {
                 img = Sprite.oneal_dead.getFxImage();
                 break;
         }
+    }
+
+    @Override
+    public void enemyAbility() {
+        speedChange++;
+        if (speedChange == 300) {
+            speed = random.nextInt(4);
+            speedChange = 0;
+        }
+    }
+
+    @Override
+    public void dieHandle() {
+        this.setLife(0);
     }
 }

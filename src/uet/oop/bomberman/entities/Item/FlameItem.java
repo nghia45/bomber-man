@@ -26,7 +26,7 @@ public class FlameItem extends Item {
             if (bomber.getX() == this.getX() && bomber.getY() == this.getY()) {
                 this.setImg(Sprite.grass.getFxImage());
                 this.getItem = true;
-                bombRadius += 1;
+                bombRadius += 2;
             }
     }
 }

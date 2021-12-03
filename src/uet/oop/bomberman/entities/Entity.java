@@ -16,16 +16,9 @@ public abstract class Entity {
 
     protected int life = 1;
 
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
     protected int state = 0;
     protected long dieTime;
+
 
     protected Image img;
 
@@ -82,4 +75,13 @@ public abstract class Entity {
     public void setLife(int life) {
         this.life = life;
     }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
 }
