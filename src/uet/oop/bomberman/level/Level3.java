@@ -1,5 +1,7 @@
 package uet.oop.bomberman.level;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.Enemies.Balloon;
@@ -17,7 +19,12 @@ public class Level3 {
     public Level3() {
         entities.clear();
         stillObjects.clear();
+        g_mediaPlayer.stop();
         new Map("res/levels/Level3.txt");
+        timeNumber = 120;
+        Image image1 = new Image("img/meme2.png");
+        view = new ImageView(image1);
+        view.setX(250);
         g_mediaPlayer = new MediaPlayer(level3_sound);
         g_mediaPlayer.play();
         bombRadius = 1;

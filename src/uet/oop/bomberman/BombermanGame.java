@@ -9,6 +9,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Control.Move;
 import uet.oop.bomberman.Menu.GameMenu;
@@ -17,19 +22,11 @@ import uet.oop.bomberman.Menu.PauseMenu;
 import uet.oop.bomberman.Menu.WinGameMenu;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.Bomber.Bomberman;
-import uet.oop.bomberman.entities.Enemies.Balloon;
-import uet.oop.bomberman.entities.Enemies.Oneal;
 import uet.oop.bomberman.graphics.Sprite;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Slider;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
-import uet.oop.bomberman.graphics.Map;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,7 +36,7 @@ import static uet.oop.bomberman.entities.Portal.*;
 
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = 35;
+    public static final int WIDTH = 25;
     public static final int HEIGHT = 15;
 
     public static boolean running = true;
@@ -51,12 +48,12 @@ public class BombermanGame extends Application {
     public static MediaPlayer g_mediaPlayer;
     public static Slider slider;
 
-    private GraphicsContext gc;
+    public static GraphicsContext gc;
     public static Canvas canvas;
+    public static Canvas cava;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
-    public static List<Entity> newBlock = new ArrayList<>();
 
     public static int bombBank = 1;
     public static int bombRadius = 1;
@@ -71,11 +68,17 @@ public class BombermanGame extends Application {
     public static ImageView imgView;
     public static Pane pane;
     public static Pane pp;
-
+    public static ImageView view;
+    public static Pane pa;
+    public static Rectangle bg;
     private GameMenu gameMenu;
     private GameOverMenu gameOverMenu;
     private WinGameMenu winGameMenu;
     private PauseMenu pauseMenu;
+
+    private long lastTime;
+    public static int timeNumber = 120;
+    public static Text level, bomb, time;
 
 
     public static  Bomber bomber;
@@ -88,8 +91,6 @@ public class BombermanGame extends Application {
     public void start(Stage stage) {
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        Map level_1 = new Map("res/levels/Level1.txt");
-
         // Tao root container
         root = new Group();
 
@@ -116,15 +117,39 @@ public class BombermanGame extends Application {
         pp.getChildren().add(pauseMenu);
 
         slider = new Slider(0, 100, 100);
-
         slider.valueProperty().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
                 g_mediaPlayer.setVolume(slider.getValue() / 100);
             }
         });
+        slider.setLayoutX(340);
+        slider.setLayoutY(50);
 
-        root.getChildren().addAll(canvas, imageView, r, slider);
+        level = new Text("Level: 1");
+        level.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        level.setFill(Color.BLACK);
+        level.setX(416);
+        level.setY(20);
+        bomb = new Text("Bombs: 1");
+        bomb.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        bomb.setFill(Color.BLACK);
+        bomb.setX(512);
+        bomb.setY(20);
+        time = new Text("Times: 120");
+        time.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        time.setFill(Color.BLACK);
+        time.setX(608);
+        time.setY(20);
+        bg = new Rectangle(285,25);
+        bg.setFill(Color.GRAY);
+        bg.setY(2);
+        bg.setX(400);
+        pa = new Pane();
+        pa.getChildren().addAll(level, bomb, time);
+        lastTime = System.currentTimeMillis();
+
+        root.getChildren().addAll(canvas, imageView, r);
 
         Scene scene = new Scene(root);
 
@@ -139,6 +164,7 @@ public class BombermanGame extends Application {
                 if(running) {
                     render();
                     update();
+                    updateMenu();
                 }
             }
         };
@@ -172,10 +198,11 @@ public class BombermanGame extends Application {
                 case P:
                     if(running) {
                         running = !running;
-                        root.getChildren().add(pp);
+                        root.getChildren().add(view);
+                        root.getChildren().addAll(pp, slider);
                     } else {
                         running = !running;
-                        root.getChildren().remove(pp);
+                        root.getChildren().removeAll(pp, view, slider);
                     }
                     break;
             }
@@ -189,6 +216,7 @@ public class BombermanGame extends Application {
             stillObjects.clear();
             root.getChildren().add(iV);
             root.getChildren().addAll(p);
+            root.getChildren().removeAll(bg, pa);
             bomber.setLife(1);
         } else {
             entities.forEach(Entity::update);
@@ -204,5 +232,20 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+    }
+
+    public void updateMenu() {
+        level.setText("Level: " + _level);
+        bomb.setText("Bombs: " + bombBank);
+        long now = System.currentTimeMillis();
+        if (now -  lastTime > 1000) {
+            lastTime = System.currentTimeMillis();
+
+            time.setText("Time: " + timeNumber);
+            timeNumber--;
+            if (timeNumber < 0)
+                bomber.setLife(0);
+        }
+
     }
 }

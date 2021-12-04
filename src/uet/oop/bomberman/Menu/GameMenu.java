@@ -32,10 +32,11 @@ public class GameMenu extends Parent {
         PlayBt.setOnMouseClicked(event -> {
             new Level1();
             root.getChildren().removeAll(r, imageView);
+            root.getChildren().add(bg);
+            root.getChildren().add(pa);
         });
 
         MenuButton ExitBt = new MenuButton("Exit");
-        MediaPlayer mediaPlayer = new MediaPlayer(menu_sound);
         ExitBt.setOnMouseClicked(event -> {
             System.exit(0);
         });

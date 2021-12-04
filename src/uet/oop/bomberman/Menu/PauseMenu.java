@@ -15,16 +15,16 @@ public class PauseMenu extends Parent {
 
         MenuButton PlayBt = new MenuButton("PlayAgain");
         PlayBt.setOnMouseClicked(event -> {
+            root.getChildren().removeAll(pp, view, slider);
             _level = 1;
             NewLevel();
             running = true;
-            root.getChildren().remove(pp);
         });
 
         MenuButton ResumeBt = new MenuButton("Resume");
         ResumeBt.setOnMouseClicked(event -> {
             running = true;
-            root.getChildren().remove(pp);
+            root.getChildren().removeAll(pp, view, slider);
         });
         MenuButton ExitBt = new MenuButton("Exit");
         ExitBt.setOnMouseClicked(event -> {

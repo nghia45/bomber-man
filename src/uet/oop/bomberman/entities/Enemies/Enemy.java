@@ -36,7 +36,7 @@ public abstract class Enemy extends Entity {
             calculateMove();
         } else {
             dieAnimationHandle();
-            dieHandle();
+            //dieHandle();
         }
         chooseSprite();
     }
@@ -50,7 +50,7 @@ public abstract class Enemy extends Entity {
             state++;
             dieTime = System.currentTimeMillis();
         }
-        if(state == 6){
+        if(state == 5){
             this.setLife(0);
         }
     }
