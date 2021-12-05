@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import uet.oop.bomberman.Control.Move;
 import uet.oop.bomberman.Menu.GameMenu;
 import uet.oop.bomberman.Menu.GameOverMenu;
@@ -54,6 +55,8 @@ public class BombermanGame extends Application {
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> newEntities = new ArrayList<>();
+    public static List<Entity> newStillObjects = new ArrayList<>();
 
     public static int bombBank = 1;
     public static int bombRadius = 1;
@@ -123,6 +126,14 @@ public class BombermanGame extends Application {
                 g_mediaPlayer.setVolume(slider.getValue() / 100);
             }
         });
+        g_mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                g_mediaPlayer.seek(Duration.ZERO);
+                g_mediaPlayer.play();
+            }
+        });
+
         slider.setLayoutX(340);
         slider.setLayoutY(50);
 
@@ -171,40 +182,43 @@ public class BombermanGame extends Application {
         timer.start();
 
         scene.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case W:
-                    Move.move_up(bomber, Sprite.SCALED_SIZE);
-                    break;
-                case S:
-                    Move.move_down(bomber, Sprite.SCALED_SIZE);
-                    break;
-                case A:
-                    Move.move_left(bomber, Sprite.SCALED_SIZE);
-                    break;
-                case D:
-                    Move.move_right(bomber, Sprite.SCALED_SIZE);
-                    break;
-                case SPACE:
-                    if (bombBank > 0) {
-                        int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
-                        int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
-                        if (position[x][y] != 2 && position[x][y] != 3) {
-                            Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
-                            entities.add(bomb);
-                            bombBank--;
+            if(bomber.getState() == 0) {
+                switch (event.getCode()) {
+                    case W:
+                        Move.move_up(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case S:
+                        Move.move_down(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case A:
+                        Move.move_left(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case D:
+                        Move.move_right(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case SPACE:
+                        if (bombBank > 0) {
+                            int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
+                            int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
+                            if (position[x][y] != 2 && position[x][y] != 3) {
+                                Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
+                                entities.add(bomb);
+                                bombBank--;
+                            }
                         }
-                    }
-                    break;
-                case P:
-                    if(running) {
-                        running = !running;
-                        root.getChildren().add(view);
-                        root.getChildren().addAll(pp, slider);
-                    } else {
-                        running = !running;
-                        root.getChildren().removeAll(pp, view, slider);
-                    }
-                    break;
+                        break;
+                    case P:
+                        if (running) {
+                            running = !running;
+                            root.getChildren().add(pp);
+                            g_mediaPlayer.pause();
+                        } else {
+                            running = !running;
+                            root.getChildren().remove(pp);
+                            g_mediaPlayer.play();
+                        }
+                        break;
+                }
             }
         });
 
@@ -219,9 +233,14 @@ public class BombermanGame extends Application {
             root.getChildren().removeAll(bg, pa);
             bomber.setLife(1);
         } else {
+            entities.addAll(newEntities);
+            stillObjects.addAll(newStillObjects);
+            newEntities.clear();
+            newStillObjects.clear();
             entities.forEach(Entity::update);
             stillObjects.forEach(Entity::update);
             entities.removeIf(entity -> entity.isLife() == 0);
+            stillObjects.removeIf(entity -> entity.isLife() == 0);
             if(entities.size() == 1) {
                 isEndGame = true;
             }

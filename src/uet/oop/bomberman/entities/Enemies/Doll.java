@@ -43,7 +43,7 @@ public class Doll extends Enemy {
           if (state == 9) {
               Balloon balloonX = new Balloon(this.getX()/ Sprite.SCALED_SIZE,
                       this.getY() / Sprite.SCALED_SIZE , Sprite.balloom_right1.getFxImage());
-              entities.add(balloonX);
+              newEntities.add(balloonX);
           }
           if (state > 9) {
               this.setLife(0);

@@ -32,7 +32,7 @@ public class Minvo extends Enemy{
             int y = this.getY() / Sprite.SCALED_SIZE;
             SpecialBomb sBomb = new SpecialBomb(this.getX() / Sprite.SCALED_SIZE,
                     this.getY() / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
-            entities.add(sBomb);
+            newEntities.add(sBomb);
             releaseTime = 0;
         }
     }

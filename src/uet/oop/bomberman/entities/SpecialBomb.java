@@ -53,7 +53,6 @@ public class SpecialBomb extends Entity{
             setLife(0);
             position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 0;
             stillObjects.removeAll(flame);
-            bombBank++;
         }
     }
 

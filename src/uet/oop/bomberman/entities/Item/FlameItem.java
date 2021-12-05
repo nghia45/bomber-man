@@ -22,11 +22,14 @@ public class FlameItem extends Item {
 
     @Override
     public void update() {
-        if (!this.getItem)
+        if (!this.getItem) {
             if (bomber.getX() == this.getX() && bomber.getY() == this.getY()) {
                 this.setImg(Sprite.grass.getFxImage());
                 this.getItem = true;
                 bombRadius += 2;
             }
+        } else {
+            makeGrass();
+        }
     }
 }

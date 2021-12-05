@@ -29,6 +29,8 @@ public class GameMenu extends Parent {
         final int offset = 400;
 
         MenuButton PlayBt = new MenuButton("Play");
+        g_mediaPlayer = new MediaPlayer(menu_sound);
+        g_mediaPlayer.play();
         PlayBt.setOnMouseClicked(event -> {
             new Level1();
             root.getChildren().removeAll(r, imageView);
