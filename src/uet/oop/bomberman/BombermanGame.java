@@ -58,6 +58,8 @@ public class BombermanGame extends Application {
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
     public static List<Entity> newEntities = new ArrayList<>();
+    public static List<Entity> newStillObjects = new ArrayList<>();
+
 
     public static int bombBank = 1;
     public static int bombRadius = 1;
@@ -203,10 +205,13 @@ public class BombermanGame extends Application {
             bomber.setLife(1);
         } else {
             entities.addAll(newEntities);
+            stillObjects.addAll(newStillObjects);
             newEntities.clear();
+            newStillObjects.clear();
             entities.forEach(Entity::update);
             stillObjects.forEach(Entity::update);
             entities.removeIf(entity -> entity.isLife() == 0);
+            stillObjects.removeIf(entity -> entity.isLife() == 0);
             if(entities.size() == 1) {
                 isEndGame = true;
             }
