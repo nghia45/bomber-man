@@ -24,6 +24,7 @@ public class PauseMenu extends Parent {
         MenuButton ResumeBt = new MenuButton("Resume");
         ResumeBt.setOnMouseClicked(event -> {
             running = true;
+            g_mediaPlayer.play();
             root.getChildren().removeAll(pp, view, slider);
         });
         MenuButton ExitBt = new MenuButton("Exit");
