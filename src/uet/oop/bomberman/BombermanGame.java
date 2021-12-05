@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uet.oop.bomberman.entities.Portal.*;
+import static uet.oop.bomberman.level.NextLevel.NewLevel;
 
 public class BombermanGame extends Application {
 
@@ -244,6 +245,9 @@ public class BombermanGame extends Application {
             if(entities.size() == 1) {
                 isEndGame = true;
             }
+        }
+        if(isEndGame && onPortal){
+            NewLevel();
         }
     }
 

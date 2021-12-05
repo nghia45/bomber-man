@@ -2,8 +2,12 @@ package uet.oop.bomberman.Menu;
 
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
+
+import javax.swing.*;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.graphics.Sound.level_complete;
 import static uet.oop.bomberman.level.NextLevel.NewLevel;
 
 public class WinGameMenu extends Parent {
