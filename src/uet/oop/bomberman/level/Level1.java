@@ -39,11 +39,11 @@ public class Level1 {
         bomber = new Bomber(23, 13,1, Sprite.player_right.getFxImage());
         bomber.setLife(1);
         entities.add(bomber);
-/*        Balloon balloon1 = new Balloon(6,1, Sprite.balloom_right1.getFxImage());
+        Balloon balloon1 = new Balloon(6,1, Sprite.balloom_right1.getFxImage());
         Balloon balloon2 = new Balloon(9,4, Sprite.balloom_left3.getFxImage());
         Oneal oneal1 = new Oneal(23,5,  Sprite.oneal_right1.getFxImage());
         entities.add(balloon1);
         entities.add(balloon2);
-        entities.add(oneal1);*/
+        entities.add(oneal1);
     }
 }

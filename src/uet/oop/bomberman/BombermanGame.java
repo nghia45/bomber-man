@@ -52,7 +52,6 @@ public class BombermanGame extends Application {
 
     public static GraphicsContext gc;
     public static Canvas canvas;
-    public static Canvas cava;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
@@ -209,14 +208,13 @@ public class BombermanGame extends Application {
                         }
                         break;
                     case P:
-                        if (running) {
+                        if(running) {
                             running = !running;
-                            root.getChildren().add(pp);
-                            g_mediaPlayer.pause();
+                            root.getChildren().add(view);
+                            root.getChildren().addAll(pp, slider);
                         } else {
                             running = !running;
-                            root.getChildren().remove(pp);
-                            g_mediaPlayer.play();
+                            root.getChildren().removeAll(pp, view, slider);
                         }
                         break;
                 }
