@@ -26,6 +26,7 @@ public class Level3 {
         view = new ImageView(image1);
         view.setX(250);
         g_mediaPlayer = new MediaPlayer(level3_sound);
+        g_mediaPlayer.setVolume(slider.getValue() / 100);
         g_mediaPlayer.play();
         bombRadius = 1;
         bombBank = 1;

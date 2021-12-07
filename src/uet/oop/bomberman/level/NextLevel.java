@@ -30,6 +30,7 @@ public class NextLevel {
                 stillObjects.clear();
                 g_mediaPlayer.stop();
                 g_mediaPlayer = new MediaPlayer(level_complete);
+                g_mediaPlayer.setVolume(slider.getValue() / 100);
                 g_mediaPlayer.play();
                 g_mediaPlayer.setOnEndOfMedia(new Runnable() {
                     @Override

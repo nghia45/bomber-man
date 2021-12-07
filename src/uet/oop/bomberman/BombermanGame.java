@@ -210,10 +210,12 @@ public class BombermanGame extends Application {
                     case P:
                         if(running) {
                             running = !running;
+                            g_mediaPlayer.pause();
                             root.getChildren().add(view);
                             root.getChildren().addAll(pp, slider);
                         } else {
                             running = !running;
+                            g_mediaPlayer.play();
                             root.getChildren().removeAll(pp, view, slider);
                         }
                         break;
@@ -264,8 +266,8 @@ public class BombermanGame extends Application {
 
             time.setText("Time: " + timeNumber);
             timeNumber--;
-            if (timeNumber < 0)
-                bomber.setLife(0);
+            if (timeNumber == 0)
+                bomber.setState(1);
         }
 
     }
