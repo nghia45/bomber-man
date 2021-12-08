@@ -6,6 +6,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.Enemies.Balloon;
+import uet.oop.bomberman.entities.Enemies.Doll;
 import uet.oop.bomberman.entities.Enemies.Oneal;
 import uet.oop.bomberman.graphics.Map;
 import uet.oop.bomberman.graphics.Sprite;
@@ -45,6 +46,8 @@ public class Level2 {
         Balloon balloon1 = new Balloon(6,1,  Sprite.balloom_right1.getFxImage());
         Balloon balloon2 = new Balloon(9,4, Sprite.balloom_left3.getFxImage());
         Oneal oneal1 = new Oneal(23,5,  Sprite.oneal_right1.getFxImage());
+        Doll doll = new Doll(5, 10, Sprite.doll_left1.getFxImage());
+        entities.add(doll);
         entities.add(balloon1);
         entities.add(balloon2);
         entities.add(oneal1);

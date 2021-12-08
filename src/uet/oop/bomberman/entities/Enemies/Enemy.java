@@ -127,7 +127,8 @@ public abstract class Enemy extends Entity {
     }
 
     public boolean canMoveDR(int x, int y) {
-        if (position[x + this.getX()  / Sprite.SCALED_SIZE][y + this.getY()/ Sprite.SCALED_SIZE] == 0) {
+        if (position[x + this.getX()  / Sprite.SCALED_SIZE][y + this.getY()/ Sprite.SCALED_SIZE] == 0
+                || position[x + this.getX()  / Sprite.SCALED_SIZE][y + this.getY()/ Sprite.SCALED_SIZE] == 1) {
             position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 0;
             return true;
         }
@@ -135,12 +136,15 @@ public abstract class Enemy extends Entity {
     }
 
     public boolean canMoveUL(int x, int y) {
-        if (position[(x + this.getX())  / Sprite.SCALED_SIZE][(y + this.getY())/ Sprite.SCALED_SIZE] == 0) {
-            position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 0;
+        int dif = 0;
+        if (position[(x + this.getX() + dif)/ Sprite.SCALED_SIZE][(y + this.getY() + dif)/ Sprite.SCALED_SIZE] == 0
+                || position[(x + this.getX() + dif)/ Sprite.SCALED_SIZE][(y + this.getY() + dif)/ Sprite.SCALED_SIZE] == 1) {
+            position[this.getX() / Sprite.SCALED_SIZE ][this.getY() / Sprite.SCALED_SIZE] = 0;
             return true;
         }
         return false;
     }
+
 
     public void move(int x, int y) {
         this.x += x;
