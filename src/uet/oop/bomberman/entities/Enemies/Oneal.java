@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.Enemies;
 
+import com.sun.org.glassfish.gmbal.ManagedObject;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Bomber.Bomber;
 import uet.oop.bomberman.entities.Enemies.AIMove.AILow;
@@ -49,16 +50,15 @@ public class Oneal extends Enemy {
     }
 
     @Override
-    public void enemyAbility() {
-        speedChange++;
-        if (speedChange == 300) {
-            speed = random.nextInt(4);
-            speedChange = 0;
-        }
+    public void speedChanging() {
+        speed = random.nextInt(2) + 1;
     }
 
     @Override
-    public void dieHandle() {
-        this.setLife(0);
+    public void enemyAbility() {
+
+
     }
+
+
 }

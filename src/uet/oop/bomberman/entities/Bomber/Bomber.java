@@ -35,10 +35,18 @@ public class Bomber extends Bomberman {
     public void checkEnemy(){
         for (Entity entity : entities){
             if(entity instanceof Enemy){
+<<<<<<< Updated upstream
                 if (getX() - Sprite.SCALED_SIZE <= entity.getX() &&
                         getX() + Sprite.SCALED_SIZE >= entity.getX()) {
                     if (getY() - Sprite.SCALED_SIZE <= entity.getY()
                             && getY() + Sprite.SCALED_SIZE>= entity.getY()) {
+=======
+                if(position[x/Sprite.SCALED_SIZE][y/Sprite.SCALED_SIZE] != 2 && position[x/Sprite.SCALED_SIZE][y/Sprite.SCALED_SIZE] != 3)
+                if (getX() - Sprite.SCALED_SIZE/2 <= entity.getX() &&
+                        getX() + Sprite.SCALED_SIZE/2 >= entity.getX()) {
+                    if (getY() - Sprite.SCALED_SIZE/2 <= entity.getY()
+                            && getY() + Sprite.SCALED_SIZE/2 >= entity.getY()) {
+>>>>>>> Stashed changes
                         setState(1);
                     }
                 }

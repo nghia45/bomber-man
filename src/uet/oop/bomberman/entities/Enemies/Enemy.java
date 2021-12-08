@@ -36,7 +36,6 @@ public abstract class Enemy extends Entity {
             calculateMove();
         } else {
             dieAnimationHandle();
-            //dieHandle();
         }
         chooseSprite();
     }
@@ -60,6 +59,7 @@ public abstract class Enemy extends Entity {
         int cY = 0;
         if (step <= 0) {
             direction = aI.calculateDirection();
+            speedChanging();
             this.step = 1;
         }
         if (direction == 0) {
@@ -126,7 +126,8 @@ public abstract class Enemy extends Entity {
     }
 
     public boolean canMoveDR(int x, int y) {
-        if (position[x + this.getX()  / Sprite.SCALED_SIZE][y + this.getY()/ Sprite.SCALED_SIZE] == 0) {
+        if (position[x + this.getX()  / Sprite.SCALED_SIZE][y + this.getY()/ Sprite.SCALED_SIZE] == 0
+        || position[x + this.getX()  / Sprite.SCALED_SIZE][y + this.getY()/ Sprite.SCALED_SIZE] == 1) {
             position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 0;
             return true;
         }
@@ -134,8 +135,10 @@ public abstract class Enemy extends Entity {
     }
 
     public boolean canMoveUL(int x, int y) {
-        if (position[(x + this.getX())  / Sprite.SCALED_SIZE][(y + this.getY())/ Sprite.SCALED_SIZE] == 0) {
-            position[this.getX() / Sprite.SCALED_SIZE][this.getY() / Sprite.SCALED_SIZE] = 0;
+        int dif = 0;
+        if (position[(x + this.getX() + dif)/ Sprite.SCALED_SIZE][(y + this.getY() + dif)/ Sprite.SCALED_SIZE] == 0
+        || position[(x + this.getX() + dif)/ Sprite.SCALED_SIZE][(y + this.getY() + dif)/ Sprite.SCALED_SIZE] == 1) {
+            position[this.getX() / Sprite.SCALED_SIZE ][this.getY() / Sprite.SCALED_SIZE] = 0;
             return true;
         }
         return false;
@@ -150,7 +153,9 @@ public abstract class Enemy extends Entity {
 
     public abstract void enemyAbility();
 
-    public abstract void dieHandle();
+    public abstract void speedChanging();
+
+
 
 }
 

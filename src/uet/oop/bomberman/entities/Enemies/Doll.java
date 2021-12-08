@@ -51,7 +51,7 @@ public class Doll extends Enemy {
     }
 
     @Override
-    public void dieHandle() {
+    public void speedChanging() {
 
     }
 }

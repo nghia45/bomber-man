@@ -145,6 +145,7 @@ public class BombermanGame extends Application {
         timer.start();
 
         scene.setOnKeyPressed(event -> {
+<<<<<<< Updated upstream
             switch (event.getCode()) {
                 case W:
                     Move.move_up(bomber, Sprite.SCALED_SIZE);
@@ -166,6 +167,31 @@ public class BombermanGame extends Application {
                             Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
                             entities.add(bomb);
                             bombBank--;
+=======
+            if(bomber.getState() == 0) {
+                switch (event.getCode()) {
+                    case UP:
+                        Move.move_up(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case DOWN:
+                        Move.move_down(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case LEFT:
+                        Move.move_left(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case RIGHT:
+                        Move.move_right(bomber, Sprite.SCALED_SIZE);
+                        break;
+                    case SPACE:
+                        if (bombBank > 0) {
+                            int x = Math.round(bomber.getX() / Sprite.SCALED_SIZE);
+                            int y = Math.round(bomber.getY() / Sprite.SCALED_SIZE);
+                            if (position[x][y] != 2 && position[x][y] != 3) {
+                                Bomb bomb = new Bomb(x, y, Sprite.bomb.getFxImage());
+                                entities.add(bomb);
+                                bombBank--;
+                            }
+>>>>>>> Stashed changes
                         }
                     }
                     break;
@@ -205,4 +231,22 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
+<<<<<<< Updated upstream
+=======
+
+    public void updateMenu() {
+        level.setText("Level: " + _level);
+        bomb.setText("Bombs: " + bombBank);
+        long now = System.currentTimeMillis();
+        if (now -  lastTime > 1000) {
+            lastTime = System.currentTimeMillis();
+
+            time.setText("Time: " + timeNumber);
+            timeNumber--;
+            if (timeNumber == 0)
+                bomber.setState(1);
+        }
+
+    }
+>>>>>>> Stashed changes
 }

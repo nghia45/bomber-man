@@ -23,6 +23,7 @@ public class Level1 {
         stillObjects.clear();
         new Map("res/levels/Level1.txt");
         g_mediaPlayer = new MediaPlayer(level1_sound);
+        g_mediaPlayer.setVolume(slider.getValue() / 100);
         g_mediaPlayer.play();
         bombRadius = 1;
         bombBank = 1;
