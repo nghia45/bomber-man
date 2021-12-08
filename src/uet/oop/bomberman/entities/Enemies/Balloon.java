@@ -44,8 +44,8 @@ public class Balloon extends Enemy {
     }
 
     @Override
-    public void dieHandle() {
-         this.setLife(0);
+    public void speedChanging() {
+
     }
 
 }

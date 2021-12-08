@@ -184,16 +184,16 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(event -> {
             if(bomber.getState() == 0) {
                 switch (event.getCode()) {
-                    case W:
+                    case UP:
                         Move.move_up(bomber, Sprite.SCALED_SIZE);
                         break;
-                    case S:
+                    case DOWN:
                         Move.move_down(bomber, Sprite.SCALED_SIZE);
                         break;
-                    case A:
+                    case LEFT:
                         Move.move_left(bomber, Sprite.SCALED_SIZE);
                         break;
-                    case D:
+                    case RIGHT:
                         Move.move_right(bomber, Sprite.SCALED_SIZE);
                         break;
                     case SPACE:

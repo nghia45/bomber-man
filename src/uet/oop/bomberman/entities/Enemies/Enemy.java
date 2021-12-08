@@ -60,6 +60,7 @@ public abstract class Enemy extends Entity {
         int cY = 0;
         if (step <= 0) {
             direction = aI.calculateDirection();
+            speedChanging();
             this.step = 1;
         }
         if (direction == 0) {
@@ -150,7 +151,7 @@ public abstract class Enemy extends Entity {
 
     public abstract void enemyAbility();
 
-    public abstract void dieHandle();
+    public abstract void speedChanging();
 
 }
 

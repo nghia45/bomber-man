@@ -50,15 +50,14 @@ public class Oneal extends Enemy {
 
     @Override
     public void enemyAbility() {
-        speedChange++;
+        /*speedChange++;
         if (speedChange == 300) {
             speed = random.nextInt(4);
             speedChange = 0;
         }
+         */
     }
-
-    @Override
-    public void dieHandle() {
-        this.setLife(0);
+    public void speedChanging() {
+        speed = random.nextInt(2) + 1;
     }
 }
